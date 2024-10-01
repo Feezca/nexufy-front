@@ -1,12 +1,15 @@
 export async function loginService(formData) {
   try {
-    const response = await fetch("http://localhost:8081/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const response = await fetch(
+      "http://nexufy.azurewebsites.net/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Error al loguearse");
@@ -19,13 +22,16 @@ export async function loginService(formData) {
 }
 export async function registerService(formData) {
   try {
-    const response = await fetch("http://localhost:8081/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const response = await fetch(
+      "http://nexufy.azurewebsites.net/api/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.text();
