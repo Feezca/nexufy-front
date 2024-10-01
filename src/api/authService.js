@@ -1,7 +1,7 @@
 export async function loginService(formData) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/auth/login",
+      "https://nexufy.azurewebsites.net/api/auth/login",
       {
         method: "POST",
         headers: {
@@ -23,7 +23,7 @@ export async function loginService(formData) {
 export async function registerService(formData) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/auth/register",
+      "https://nexufy.azurewebsites.net/api/auth/register",
       {
         method: "POST",
         headers: {

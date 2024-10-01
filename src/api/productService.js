@@ -4,7 +4,7 @@
 export async function getProduct(productId) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/product/" + productId,
+      "https://nexufy.azurewebsites.net/api/product/" + productId,
       {
         headers: {
           accept: "application/json",
@@ -30,7 +30,7 @@ export async function getProduct(productId) {
 export async function getAllProducts() {
   try {
     const res = await fetch(
-      "http://nexufy.azurewebsites.net/api/products/all",
+      "https://nexufy.azurewebsites.net/api/products/all",
       {
         headers: {
           accept: "application/json",
@@ -52,7 +52,7 @@ export async function getAllProducts() {
 export async function getComments(productId) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/rating-comments/product/" +
+      "https://nexufy.azurewebsites.net/api/rating-comments/product/" +
         productId,
       {
         headers: {
@@ -74,7 +74,7 @@ export async function getComments(productId) {
 export async function postComments(commentData) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/rating-comments",
+      "https://nexufy.azurewebsites.net/api/rating-comments",
       {
         method: "POST",
         headers: {

@@ -2,7 +2,7 @@
 export async function getProductsByCustomerId(customerId, token) {
   try {
     const response = await fetch(
-      `http://nexufy.azurewebsites.net/api/customer/${customerId}/products`,
+      `https://nexufy.azurewebsites.net/api/customer/${customerId}/products`,
       {
         headers: {
           accept: "application/json",
@@ -26,7 +26,7 @@ export async function getProductsByCustomerId(customerId, token) {
 export async function getCustomerById(customerId, token) {
   try {
     const response = await fetch(
-      `http://nexufy.azurewebsites.net/api/customer/${customerId}`,
+      `https://nexufy.azurewebsites.net/api/customer/${customerId}`,
       {
         headers: {
           accept: "application/json",
@@ -50,7 +50,7 @@ export async function getCustomerById(customerId, token) {
 export async function getAllCustomers(token) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/customer/all",
+      "https://nexufy.azurewebsites.net/api/customer/all",
       {
         headers: {
           accept: "application/json",
@@ -73,7 +73,7 @@ export async function getAllCustomers(token) {
 export async function updateCustomerProfile(customerId, token, profileData) {
   try {
     const response = await fetch(
-      `http://nexufy.azurewebsites.net/api/customer/profile/${customerId}`,
+      `https://nexufy.azurewebsites.net/api/customer/profile/${customerId}`,
       {
         method: "PUT",
         headers: {

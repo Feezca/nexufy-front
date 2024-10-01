@@ -1,7 +1,7 @@
 export async function registerAdminUser(formData, token) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/auth/register-admin",
+      "https://nexufy.azurewebsites.net/api/auth/register-admin",
       {
         method: "POST",
         headers: {
