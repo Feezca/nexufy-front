@@ -1,18 +1,6 @@
 {
   "routes": [
     {
-      "route": "/admin/*",
-      "rewrite": "/index.html"
-    },
-    {
-      "route": "/ceo/*",
-      "rewrite": "/index.html"
-    },
-    {
-      "route": "/product/*",
-      "rewrite": "/index.html"
-    },
-    {
       "route": "/*",
       "rewrite": "/index.html"
     }
