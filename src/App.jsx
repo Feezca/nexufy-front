@@ -38,55 +38,59 @@ function App() {
     },
     {
       path: "/admin",
-      element: <Protected/>,
-      children: [{
-        path: "",
-        element:<AdminLayout />,
-        children: [
-          {
-            path: "datos",
-            element: <Profile />,
-          },
-          {
-            path: "publicaciones",
-            element: <Publications />,
-          },
-          {
-            path: "estadisticas",
-            element: <Statistics />,
-          },
-        ],
-      }]
+      element: <Protected />,
+      children: [
+        {
+          path: "",
+          element: <AdminLayout />,
+          children: [
+            {
+              path: "datos",
+              element: <Profile />,
+            },
+            {
+              path: "publicaciones",
+              element: <Publications />,
+            },
+            {
+              path: "estadisticas",
+              element: <Statistics />,
+            },
+          ],
+        },
+      ],
     },
     {
       path: "/ceo",
-      element: <Protected/>,
-      children: [{
-        path: "",
-        element:<CeoLayout />,
-        children: [
-          {
-            path: "datos",
-            element: <Profile />,
-          },
-          {
-            path: "users",
-            element: <AbmUsers />,
-          },
-          {
-            path: "products",
-            element: <AbmShop />,
-          },
-          {
-            path: "estadisticas",
-            element: <Statistics />,
-          },
-          {
-            path: "notificaciones",
-            element: <Notifications />,
-          },
-        ],
-      }]
+      element: <Protected />,
+      children: [
+        {
+          path: "",
+          element: <CeoLayout />,
+          children: [
+            {
+              path: "datos",
+              element: <Profile />,
+            },
+            {
+              path: "users",
+              element: <AbmUsers />,
+            },
+            {
+              path: "products",
+              element: <AbmShop />,
+            },
+            {
+              path: "estadisticas",
+              element: <Statistics />,
+            },
+            {
+              path: "notificaciones",
+              element: <Notifications />,
+            },
+          ],
+        },
+      ],
     },
     {
       path: "login",
@@ -97,6 +101,7 @@ function App() {
       element: <Register />,
     },
   ]);
+
   return (
     <>
       <AuthenticationContextProvider>
