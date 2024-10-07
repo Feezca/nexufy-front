@@ -1,10 +1,15 @@
 import { useState, useEffect, useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { AuthenticationContext } from "../../../services/authenticationContext/authentication.context";
+<<<<<<< HEAD
 import { getSellerContact } from "../../../api/productService"; // Importa la nueva función
+=======
+import { ThemeContext } from "../../themes/ThemeContext"; // Importar el ThemeContext
+>>>>>>> 151ba8b75a175309c62005d8dc84cdb31cc0e047
 
 const ProductContact = ({ customerId }) => {
   const { user } = useContext(AuthenticationContext);
+<<<<<<< HEAD
   const [sellerInfo, setSellerInfo] = useState(null);
 
   useEffect(() => {
@@ -20,12 +25,21 @@ const ProductContact = ({ customerId }) => {
 
     fetchSellerInfo();
   }, [customerId]);
+=======
+  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
+>>>>>>> 151ba8b75a175309c62005d8dc84cdb31cc0e047
 
   return (
     <div>
       <Col>
         <Row>
-          <p className="fw-medium fs-5">Contactar al vendedor</p>
+          <p
+            className={`fw-medium fs-5 ${
+              darkMode ? "text-light" : "text-dark"
+            }`}
+          >
+            Contactar al vendedor
+          </p>
         </Row>
         {user  ? (
           <div>
@@ -72,19 +86,33 @@ const ProductContact = ({ customerId }) => {
               </Col>
             </Row>
             <Row>
+<<<<<<< HEAD
               <p className="text-secondary mt-2">
                 <i className="bi bi-geo-alt pe-2 "></i>Se encuentra en {sellerInfo?.address}
+=======
+              <p
+                className={`mt-2 ${darkMode ? "text-light" : "text-secondary"}`}
+              >
+                <i className="bi bi-geo-alt pe-2"></i>Se encuentra en La Falda,
+                Córdoba
+>>>>>>> 151ba8b75a175309c62005d8dc84cdb31cc0e047
               </p>
             </Row>
           </div>
         ) : (
-          <p>
+          <p className={darkMode ? "text-light" : "text-dark"}>
             Para contactar con el vendedor, <a href="/login">inicia sesión</a>.
           </p>
         )}
         <div className="d-flex align-items-center">
           <i className="bi bi-star-fill text-primary-custom"></i>
-          <span className="fs-sm text-secondary ms-2">15 visitas</span>
+          <span
+            className={`fs-sm ms-2 ${
+              darkMode ? "text-light" : "text-secondary"
+            }`}
+          >
+            15 visitas
+          </span>
         </div>
       </Col>
     </div>

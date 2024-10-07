@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Row, Pagination } from "react-bootstrap";
 import EditProfileForm from "../../AuthForm/EditProfileForm";
 import { updateCustomerProfile } from "../../../api/customerService";
+import { ThemeContext } from "../../themes/ThemeContext"; // Importar el ThemeContext
 
 const CustomTable = ({ columns, input }) => {
+  const { darkMode } = useContext(ThemeContext); // Acceder al estado del modo oscuro
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
@@ -13,7 +15,7 @@ const CustomTable = ({ columns, input }) => {
   const [error, setError] = useState(null);
   const [userToEdit, setUserToEdit] = useState(null);
 
-  // Paginate data
+  // Paginación
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedData = data.slice(startIndex, startIndex + itemsPerPage);
@@ -51,7 +53,13 @@ const CustomTable = ({ columns, input }) => {
 
   return (
     <div className="container">
-      <Table striped bordered hover variant="light">
+      <Table
+        striped
+        bordered
+        hover
+        variant={darkMode ? "dark" : "light"} // Cambiar el tema de la tabla
+        className={darkMode ? "bg-dark text-light" : "bg-light text-dark"}
+      >
         <thead>
           <tr className="text-center">
             {columns.map((col) => (
@@ -69,7 +77,7 @@ const CustomTable = ({ columns, input }) => {
                 <Row className="justify-content-end me-4">
                   <Button
                     onClick={() => handleEditClick(item.id)}
-                    variant="outline-secondary"
+                    variant={darkMode ? "outline-light" : "outline-secondary"} // Cambiar estilo del botón
                     size="sm"
                     className="border border-2 rounded-pill w-auto p-1 d-flex align-items-center"
                   >
@@ -85,8 +93,14 @@ const CustomTable = ({ columns, input }) => {
       </Table>
       {error && <p className="text-danger">{error.message}</p>}
       <Pagination className="w-full d-flex justify-content-center">
-        <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
-        <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+        <Pagination.First
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+        />
+        <Pagination.Prev
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        />
         {Array.from({ length: totalPages }, (_, index) => (
           <Pagination.Item
             key={index}
@@ -96,8 +110,14 @@ const CustomTable = ({ columns, input }) => {
             {index + 1}
           </Pagination.Item>
         ))}
-        <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
-        <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+        <Pagination.Next
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        />
+        <Pagination.Last
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages}
+        />
       </Pagination>
     </div>
   );

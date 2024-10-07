@@ -1,13 +1,18 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
+=======
+import React, { useEffect, useState, useContext } from "react";
+>>>>>>> 151ba8b75a175309c62005d8dc84cdb31cc0e047
 import { getComments } from "../../../api/productService";
+import { ThemeContext } from "../../themes/ThemeContext"; // Importar el ThemeContext
 
 const ProductComments = ({ productId }) => {
-  
+  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const productHardcode="66bbd887094da25c9d6e7ef9"
+  const productHardcode = "66bbd887094da25c9d6e7ef9";
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -32,27 +37,31 @@ const ProductComments = ({ productId }) => {
   }
 
   return (
-    <>
-      <div className="container">
-        <p className="fw-medium text-dark-subtle">
-          Comentarios desde fetch
+    <div className="container">
+      <p
+        className={`fw-medium ${darkMode ? "text-light" : "text-dark-subtle"}`}
+      >
+        Comentarios desde fetch
+      </p>
+      {comments.length > 0 ? (
+        comments.map((comment) => (
+          <div
+            key={comment.id}
+            className={`rounded border border-dark-subtle border-2 mb-2 p-3 ${
+              darkMode ? "bg-dark text-light" : "bg-white text-dark"
+            }`}
+          >
+            <p>{comment.text}</p>
+            <p>Rating: {comment.rating}</p>
+            <p>Fecha: {new Date(comment.date).toLocaleDateString()}</p>
+          </div>
+        ))
+      ) : (
+        <p className={darkMode ? "text-light" : "text-dark"}>
+          No comments available
         </p>
-        {comments.length > 0 ? (
-          comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="bg-white rounded border border-dark-subtle border-2 mb-2 p-3"
-            >
-              <p>{comment.text}</p>
-              <p>Rating: {comment.rating}</p>
-              <p>Fecha: {new Date(comment.date).toLocaleDateString()}</p>
-            </div>
-          ))
-        ) : (
-          <p>No comments available</p>
-        )}
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 

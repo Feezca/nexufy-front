@@ -1,46 +1,87 @@
+/* Variables de color */
+:root {
+  --color-bg: #f5f5f5; /* Fondo claro */
+  --color-bg-secundario: #f1f1e6; /* Fondo secundario claro */
+  --color-bg-terciario: #f1f1e6; /* Fondo terciario claro */
+  --color-button-gradient-start: rgb(17, 89, 130); /* Color inicio degradado */
+  --color-button-gradient-end: rgb(0, 156, 248); /* Color fin degradado */
+  --color-overlay: rgba(0, 0, 0, 0.6); /* Overlay oscuro */
+  --color-dropdown-bg: white; /* Fondo del dropdown */
+  --color-dropdown-hover-bg: #e2e2e2bb; /* Fondo del dropdown al pasar mouse */
+  --color-text-primary: #115982; /* Color para el modo claro */
+}
+
+body.dark-mode {
+  --color-bg: #1a1a1a; /* Fondo oscuro */
+  --color-bg-secundario: #2a2a2a; /* Fondo secundario oscuro */
+  --color-bg-terciario: #2a2a2a; /* Fondo terciario oscuro */
+  --color-text-primary: #e0e0e0; /* Color de texto primario oscuro (blanco) */
+  --color-overlay: rgba(255, 255, 255, 0.2); /* Overlay claro */
+  --color-dropdown-bg: #333; /* Fondo del dropdown oscuro */
+}
+
+body.light-mode {
+  --color-bg: #f5f5f5;
+  --color-text-primary: #115982; /* Color para el modo claro */
+}
+
+/* Aplicar las variables CSS para el texto primario */
+.text-primary-custom {
+  color: var(--color-text-primary);
+}
+
+/* Estilos generales */
 * {
   font-family: "Montserrat", sans-serif;
 }
-body{
-  background-color: #f5f5f5;
+
+body {
+  background-color: var(--color-bg);
 }
-.bg-secundario{
-background-color: #f1f1e6;
+
+.bg-secundario {
+  background-color: var(--color-bg-secundario);
 }
+
 .bg-tertiary {
-  background-color: #f1f1e6;
+  background-color: var(--color-bg-terciario);
 }
-.text-primary-custom{
-color: #115982;
+
+.text-primary-custom {
+  color: var(--color-text-primary);
 }
 
 .button-gradient {
-  background: rgb(17, 89, 130);
+  background: var(--color-button-gradient-start);
   background: linear-gradient(
     94deg,
-    rgba(17, 89, 130, 1) 29%,
-    rgba(0, 156, 248, 1) 70%
+    var(--color-button-gradient-start) 29%,
+    var(--color-button-gradient-end) 70%
   );
 }
-/* Fonts  */
+
+/* Fonts */
 .normalFont {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
 }
+
 .semiBoldFont {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 600;
   font-style: normal;
 }
+
 .boldFont {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 900;
   font-style: normal;
 }
+
 /* CustomCard.css */
 .custom-card {
   position: relative;
@@ -58,10 +99,9 @@ color: #115982;
   transition: filter 0.3s ease-in-out; /* Transición suave para el efecto de hover */
 }
 
-
-
 /* Efecto hover para pantallas grandes */
-@media (min-width: 992px) { /* lg y mayores */
+@media (min-width: 992px) {
+  /* lg y mayores */
   .custom-card:hover .card-image {
     filter: blur(5px); /* Aplica el efecto de desenfoque al hacer hover */
   }
@@ -77,7 +117,7 @@ color: #115982;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0); /* Capa oscura con 20% de opacidad */
+  background: var(--color-overlay); /* Capa oscura con opacidad */
   opacity: 0; /* Invisible por defecto */
   display: flex;
   flex-direction: column;
@@ -86,7 +126,11 @@ color: #115982;
   padding: 1rem;
   text-align: left; /* Alinea el texto a la izquierda */
   transition: opacity 0.3s ease-in-out; /* Transición suave para el efecto de hover */
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)); /* Gradiente negro de derecha a izquierda */
+  background: linear-gradient(
+    to right,
+    var(--color-overlay),
+    rgba(0, 0, 0, 0.3)
+  ); /* Gradiente negro de derecha a izquierda */
 }
 
 .text-card-custom p {
@@ -94,7 +138,8 @@ color: #115982;
 }
 
 /* Estilo para pantallas pequeñas */
-@media (max-width: 991px) { /* Menores a lg */
+@media (max-width: 991px) {
+  /* Menores a lg */
   .overlay {
     opacity: 1; /* Siempre visible en pantallas pequeñas */
   }
@@ -105,26 +150,40 @@ color: #115982;
   top: 100%;
   right: -10vw;
   width: 90vw; /* Ancho completo de la pantalla */
-  background: white; /* Fondo blanco */
+  background: var(--color-dropdown-bg); /* Fondo dropdown */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el dropdown */
   z-index: 1000; /* Asegúrate de que esté sobre otros elementos */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajusta el tamaño de las columnas */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(200px, 1fr)
+  ); /* Ajusta el tamaño de las columnas */
   gap: 1rem; /* Espacio entre las categorías */
-  padding: .2rem; /* Espacio interno del dropdown */
+  padding: 0.2rem; /* Espacio interno del dropdown */
   overflow-y: auto; /* Añade scroll si el contenido es muy largo */
   max-height: 80vh; /* Altura máxima para que el dropdown no ocupe toda la pantalla */
 }
-
 
 .dropdown-itemCategory {
   text-align: center;
   padding: 1rem;
   text-decoration: none;
-  color: black; /* Color del texto */
-  font-size: 14px
+  color: var(--color-text-primary); /* Color del texto */
+  font-size: 14px;
 }
 
 .dropdown-itemCategory:hover {
-  background-color: #e2e2e2bb; /* Color de fondo al pasar el mouse */
+  background-color: var(
+    --color-dropdown-hover-bg
+  ); /* Color de fondo al pasar el mouse */
+}
+
+/* Placeholder para modo oscuro */
+.form-control::placeholder {
+  color: #e0e0e0; /* Cambia el color del placeholder para modo oscuro */
+}
+
+/* Placeholder para modo claro */
+.form-control-light::placeholder {
+  color: #6c757d; /* Color del placeholder para modo claro */
 }

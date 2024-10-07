@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import ProductList from "../../Products/ProductList";
 import { getProductsByCustomerId } from "../../../api/customerService";
 import { useOutletContext } from "react-router-dom";
+import { ThemeContext } from "../../themes/ThemeContext"; // Importar el ThemeContext
 
 const Publications = () => {
   const { user } = useOutletContext();
+  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
 
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
@@ -36,9 +38,14 @@ const Publications = () => {
   if (error) {
     return <p className="text-danger">{error}</p>;
   }
+
   return (
-    <div>
-      <h2>Productos publicados por ti</h2>
+    <div
+      className={`container ${
+        darkMode ? "bg-dark text-light" : "bg-light text-dark"
+      } p-4 rounded`}
+    >
+      <h2 className="fw-bold mb-4">Productos publicados por ti</h2>
       {products.length > 0 ? (
         <ProductList products={products} />
       ) : (

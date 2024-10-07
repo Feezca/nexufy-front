@@ -8,15 +8,24 @@ export async function loginService(formData) {
       body: JSON.stringify(formData),
     });
 
+    const data = await response.json();
+
+    // Si la respuesta no es correcta, lanzar error
     if (!response.ok) {
-      throw new Error("Error al loguearse");
+      // Verificar si el mensaje de error contiene suspensión
+      if (data.message && data.message.includes("suspended")) {
+        throw new Error("Este usuario está suspendido.");
+      }
+      throw new Error(data.message || "Error al loguearse");
     }
-    return await response.json();
+
+    return data;
   } catch (error) {
     console.log("Failed connection to auth login", error);
     throw error;
   }
 }
+
 export async function registerService(formData) {
   try {
     const response = await fetch("http://localhost:8081/api/auth/register", {

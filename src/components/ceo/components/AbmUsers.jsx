@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import CustomTable from "./CustomTable";
 import { useOutletContext, Navigate, useNavigate } from "react-router-dom";
 import { getAllCustomers } from "../../../api/customerService";
 import { Button, Form } from "react-bootstrap";
+import { ThemeContext } from "../../themes/ThemeContext"; // Importar el ThemeContext
 
 const AbmUsers = () => {
   const { user } = useOutletContext();
   const navigate = useNavigate();
-  
+  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema oscuro
+
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -62,18 +64,37 @@ const AbmUsers = () => {
   ];
 
   return (
-    <div className="container shadow p-4 bg-light-subtle mb-3 mx-2" style={{ borderRadius: "20px" }}>
+    <div
+      className={`container shadow p-4 mb-3 mx-2 ${
+        darkMode ? "bg-dark text-light" : "bg-light-subtle"
+      }`}
+      style={{ borderRadius: "20px" }}
+    >
       <div className="d-flex justify-content-between align-items-center mb-2">
         <p className="fs-4 fw-semibold">Usuarios registrados</p>
         <div className="w-50 d-flex justify-content-around">
           <Form className="d-flex w-75">
-            <Form.Control type="text" placeholder="Buscar Usuario" />
-            <Button className="mx-2" type="submit">
+            <Form.Control
+              type="text"
+              placeholder="Buscar Usuario"
+              className={darkMode ? "bg-dark text-light" : "bg-light text-dark"}
+            />
+            <Button
+              className="mx-2"
+              type="submit"
+              variant={darkMode ? "outline-light" : "outline-secondary"}
+            >
               <i className="bi bi-search"></i>
             </Button>
           </Form>
         </div>
-        <Button className="mx-2" onClick={() => { /* lógica para agregar usuario */ }}>
+        <Button
+          className="mx-2"
+          onClick={() => {
+            /* lógica para agregar usuario */
+          }}
+          variant={darkMode ? "outline-light" : "outline-secondary"}
+        >
           <i className="bi bi-plus"> Agregar</i>
         </Button>
       </div>

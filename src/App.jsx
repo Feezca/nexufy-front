@@ -15,6 +15,8 @@ import CeoLayout from "./components/ceo/Layout";
 import AbmShop from "./components/ceo/components/AbmShop";
 import AbmUsers from "./components/ceo/components/AbmUsers";
 import Notifications from "./components/ceo/components/Notifications";
+import { ThemeProvider } from "./components/themes/ThemeContext"; // Importar ThemeProvider
+import ThemeToggle from "./components/themes/ThemeToggle"; // Importar el botón de alternar tema
 
 function App() {
   const router = createBrowserRouter([
@@ -38,55 +40,59 @@ function App() {
     },
     {
       path: "/admin",
-      element: <Protected/>,
-      children: [{
-        path: "",
-        element:<AdminLayout />,
-        children: [
-          {
-            path: "datos",
-            element: <Profile />,
-          },
-          {
-            path: "publicaciones",
-            element: <Publications />,
-          },
-          {
-            path: "estadisticas",
-            element: <Statistics />,
-          },
-        ],
-      }]
+      element: <Protected />,
+      children: [
+        {
+          path: "",
+          element: <AdminLayout />,
+          children: [
+            {
+              path: "datos",
+              element: <Profile />,
+            },
+            {
+              path: "publicaciones",
+              element: <Publications />,
+            },
+            {
+              path: "estadisticas",
+              element: <Statistics />,
+            },
+          ],
+        },
+      ],
     },
     {
       path: "/ceo",
-      element: <Protected/>,
-      children: [{
-        path: "",
-        element:<CeoLayout />,
-        children: [
-          {
-            path: "datos",
-            element: <Profile />,
-          },
-          {
-            path: "users",
-            element: <AbmUsers />,
-          },
-          {
-            path: "products",
-            element: <AbmShop />,
-          },
-          {
-            path: "estadisticas",
-            element: <Statistics />,
-          },
-          {
-            path: "notificaciones",
-            element: <Notifications />,
-          },
-        ],
-      }]
+      element: <Protected />,
+      children: [
+        {
+          path: "",
+          element: <CeoLayout />,
+          children: [
+            {
+              path: "datos",
+              element: <Profile />,
+            },
+            {
+              path: "users",
+              element: <AbmUsers />,
+            },
+            {
+              path: "products",
+              element: <AbmShop />,
+            },
+            {
+              path: "estadisticas",
+              element: <Statistics />,
+            },
+            {
+              path: "notificaciones",
+              element: <Notifications />,
+            },
+          ],
+        },
+      ],
     },
     {
       path: "login",
@@ -97,12 +103,15 @@ function App() {
       element: <Register />,
     },
   ]);
+
   return (
-    <>
+    <ThemeProvider>
+      {" "}
+      {/* Envolver toda la aplicación en ThemeProvider */}
       <AuthenticationContextProvider>
         <RouterProvider router={router} />
       </AuthenticationContextProvider>
-    </>
+    </ThemeProvider>
   );
 }
 
