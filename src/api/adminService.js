@@ -1,7 +1,7 @@
 export async function registerAdminUser(formData, token) {
   try {
     const response = await fetch(
-      "http://localhost:8081/api/superadmin/customers/create",
+      "http://nexufy.azurewebsites.net/api/superadmin/customers/create",
       {
         method: "POST",
         headers: {
@@ -26,7 +26,7 @@ export async function registerAdminUser(formData, token) {
 export async function suspendCustomer(id, days, token) {
   try {
     const response = await fetch(
-      `http://localhost:8081/api/superadmin/customers/suspend/${id}?days=${days}`,
+      `http://nexufy.azurewebsites.net/api/superadmin/customers/suspend/${id}?days=${days}`,
       {
         method: "PUT",
         headers: {
@@ -48,7 +48,7 @@ export async function suspendCustomer(id, days, token) {
 export async function unsuspendCustomer(id, token) {
   try {
     const response = await fetch(
-      `http://localhost:8081/api/superadmin/customers/unsuspend/${id}`,
+      `http://nexufy.azurewebsites.net/api/superadmin/customers/unsuspend/${id}`,
       {
         method: "PUT",
         headers: {
@@ -74,7 +74,7 @@ export async function unsuspendCustomer(id, token) {
 export async function deleteCustomer(id, token) {
   try {
     const response = await fetch(
-      `http://localhost:8081/api/superadmin/customers/delete/${id}`,
+      `http://nexufy.azurewebsites.net/api/superadmin/customers/delete/${id}`,
       {
         method: "DELETE",
         headers: {
