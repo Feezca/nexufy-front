@@ -18,3 +18,9 @@
     }
   ]
 }
+{
+  "mimeTypes": {
+    ".js": "application/javascript",
+    ".css": "text/css"
+  }
+}
