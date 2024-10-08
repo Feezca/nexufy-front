@@ -4,6 +4,7 @@ export async function loginService(formData) {
       "https://nexufy.azurewebsites.net/api/auth/login",
       {
         method: "POST",
+        mode: "cors",
         headers: {
           "Content-Type": "application/json",
         },
