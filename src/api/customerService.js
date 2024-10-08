@@ -49,12 +49,15 @@ export async function getCustomerById(customerId, token) {
 
 export async function getAllCustomers(token) {
   try {
-    const response = await fetch("https://nexufy.azurewebsites.net/api/customer/all", {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      "https://nexufy.azurewebsites.net/api/customer/all",
+      {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -70,7 +73,7 @@ export async function getAllCustomers(token) {
 export async function updateCustomerProfile(customerId, token, profileData) {
   try {
     const response = await fetch(
-      https://nexufy.azurewebsites.net/api/customer/profile/${customerId}`,
+      `https://nexufy.azurewebsites.net/api/customer/profile/${customerId}`,
       {
         method: "PUT",
         headers: {

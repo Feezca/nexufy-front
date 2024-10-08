@@ -37,6 +37,7 @@ const CreateUserForm = ({ onSave }) => {
               name="password"
               onChange={handleChange}
               required
+              autocomplete="current-password"
             />
           </Form.Group>
           <Form.Group controlId="formUsername">

@@ -15,6 +15,7 @@ import CeoLayout from "./components/ceo/Layout";
 import AbmShop from "./components/ceo/components/AbmShop";
 import AbmUsers from "./components/ceo/components/AbmUsers";
 import Notifications from "./components/ceo/components/Notifications";
+import { ThemeProvider } from "./components/themes/ThemeContext";
 
 function App() {
   const router = createBrowserRouter([
@@ -103,11 +104,12 @@ function App() {
   ]);
 
   return (
-    <>
+    <ThemeProvider>
+      {" "}
       <AuthenticationContextProvider>
         <RouterProvider router={router} />
       </AuthenticationContextProvider>
-    </>
+    </ThemeProvider>
   );
 }
 
