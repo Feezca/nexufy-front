@@ -8,14 +8,13 @@ export async function loginService(formData) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        credentials: "include",
       }
     );
 
     const data = await response.json();
 
-    // Si la respuesta no es correcta, lanzar error
     if (!response.ok) {
-      // Verificar si el mensaje de error contiene suspensión
       if (data.message && data.message.includes("suspended")) {
         throw new Error("Este usuario está suspendido.");
       }
