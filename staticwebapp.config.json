@@ -1,16 +1,10 @@
 {
   "routes": [
     {
-      "route": "/admin/*",
-      "rewrite": "/index.html"
-    },
-    {
-      "route": "/ceo/*",
-      "rewrite": "/index.html"
-    },
-    {
-      "route": "/product/*",
-      "rewrite": "/index.html"
+      "route": "/assets/*",
+      "headers": {
+        "cache-control": "max-age=31536000"
+      }
     },
     {
       "route": "/*",
