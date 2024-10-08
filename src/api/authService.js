@@ -1,6 +1,6 @@
 export async function loginService(formData) {
   try {
-    const response = await fetch("https://blue-bay-040a5d710.5.azurestaticapps.net/api/auth/login", {
+    const response = await fetch("https://nexufy.azurewebsites.net/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export async function loginService(formData) {
 
 export async function registerService(formData) {
   try {
-    const response = await fetch("https://blue-bay-040a5d710.5.azurestaticapps.net/api/auth/register", {
+    const response = await fetch("https://nexufy.azurewebsites.net/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
