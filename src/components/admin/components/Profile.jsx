@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getCustomerById } from "../../../api/customerService";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { Navigate, useOutletContext } from "react-router-dom";
-import EditProfileForm from "../../AuthForm/EditProfileForm";
-import { updateCustomerProfile } from "../../../api/customerService";
+import EditProfileFormUserAdmin from "../../AuthForm/EditProfileFormUserAdmin";
+import EditProfileFormSuperAdmin from "../../AuthForm/EditProfileFormSuperAdmin";
+import { ThemeContext } from "../../themes/ThemeContext"; // Importar ThemeContext
+import { AuthenticationContext } from "../../../services/authenticationContext/authentication.context"; // Importar contexto de autenticación
 
 const Profile = () => {
   const { user } = useOutletContext();
+  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
+  const { user: loggedInUser } = useContext(AuthenticationContext); // Obtener usuario autenticado
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,7 +41,6 @@ const Profile = () => {
 
     try {
       await updateCustomerProfile(user.id, token, updatedData);
-
       setData(updatedData);
       setIsEditing(false);
     } catch (error) {
@@ -57,20 +60,41 @@ const Profile = () => {
     return <p className="text-danger">{error.message}</p>;
   }
 
+  // Lógica para mostrar el formulario correspondiente
+  const isSuperAdmin = loggedInUser.roles.includes("ROLE_SUPERADMIN");
+
   return (
-    <div className="container shadow p-4 bg-light-subtle mb-3 mx-2 d-flex flex-column align-items-start" style={{borderRadius:"20px" }}>
+    <div
+      className={`container shadow p-4 mb-3 mx-2 d-flex flex-column align-items-start ${
+        darkMode ? "bg-dark text-light" : "bg-light text-dark"
+      }`}
+      style={{ borderRadius: "20px" }}
+    >
       <p className="fs-3 fw-semibold">Mi Perfil</p>
 
-      <div className="w-100 p-2 px-4 border rounded border-2 border-secondary border-opacity-25">
+      <div
+        className={`w-100 p-2 px-4 border rounded border-2 ${
+          darkMode
+            ? "border-light-subtle"
+            : "border-secondary border-opacity-25"
+        }`}
+      >
         {isEditing ? (
-          <EditProfileForm initialData={data} onSave={handleSave} />
+          isSuperAdmin ? (
+            <EditProfileFormSuperAdmin initialData={data} onSave={handleSave} />
+          ) : (
+            <EditProfileFormUserAdmin initialData={data} onSave={handleSave} />
+          )
         ) : (
           <>
+            {/* Mostrar información del usuario */}
             <Row className="text-dark d-flex justify-content-between">
               <Col xs={12} md={4}>
                 <Row>
                   <Form.Label
-                    className="text-body-tertiary fw-semibold"
+                    className={`fw-semibold ${
+                      darkMode ? "text-light" : "text-body-tertiary"
+                    }`}
                     style={{ fontSize: ".9rem" }}
                   >
                     Nombre
@@ -81,7 +105,9 @@ const Profile = () => {
                 </Row>
                 <Row>
                   <Form.Label
-                    className="text-body-tertiary fw-semibold"
+                    className={`fw-semibold ${
+                      darkMode ? "text-light" : "text-body-tertiary"
+                    }`}
                     style={{ fontSize: ".9rem" }}
                   >
                     Email
@@ -92,7 +118,9 @@ const Profile = () => {
                 </Row>
                 <Row>
                   <Form.Label
-                    className="text-body-tertiary fw-semibold"
+                    className={`fw-semibold ${
+                      darkMode ? "text-light" : "text-body-tertiary"
+                    }`}
                     style={{ fontSize: ".9rem" }}
                   >
                     Dirección
@@ -106,7 +134,9 @@ const Profile = () => {
               <Col xs={12} md={4}>
                 <Row>
                   <Form.Label
-                    className="text-body-tertiary fw-semibold"
+                    className={`fw-semibold ${
+                      darkMode ? "text-light" : "text-body-tertiary"
+                    }`}
                     style={{ fontSize: ".9rem" }}
                   >
                     Apellido
@@ -117,7 +147,9 @@ const Profile = () => {
                 </Row>
                 <Row>
                   <Form.Label
-                    className="text-body-tertiary fw-semibold"
+                    className={`fw-semibold ${
+                      darkMode ? "text-light" : "text-body-tertiary"
+                    }`}
                     style={{ fontSize: ".9rem" }}
                   >
                     Nombre de usuario
@@ -128,7 +160,9 @@ const Profile = () => {
                 </Row>
                 <Row>
                   <Form.Label
-                    className="text-body-tertiary fw-semibold"
+                    className={`fw-semibold ${
+                      darkMode ? "text-light" : "text-body-tertiary"
+                    }`}
                     style={{ fontSize: ".9rem" }}
                   >
                     Fecha de nacimiento

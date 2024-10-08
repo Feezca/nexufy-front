@@ -48,11 +48,33 @@ export async function getAllProducts() {
   }
 }
 
+export async function postProduct(newProduct, token) {
+  try {
+    const response = await fetch(
+      "http://nexufy.azurewebsites.net/api/products",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newProduct),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Failed to fetch product:", error);
+    throw error;
+  }
+}
+
 // Comments services
 export async function getComments(productId) {
   try {
     const response = await fetch(
-      "https://nexufy.azurewebsites.net/api/rating-comments/product/" +
+      "http://nexufy.azurewebsites.net/api/rating-comments/product/" +
         productId,
       {
         headers: {
@@ -74,7 +96,7 @@ export async function getComments(productId) {
 export async function postComments(commentData) {
   try {
     const response = await fetch(
-      "https://nexufy.azurewebsites.net/api/rating-comments",
+      "http://nexufy.azurewebsites.net/api/rating-comments",
       {
         method: "POST",
         headers: {

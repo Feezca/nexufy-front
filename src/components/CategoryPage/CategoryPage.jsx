@@ -1,4 +1,3 @@
-import React from "react";
 import products from "../../data/products.json";
 import { useLocation } from "react-router-dom";
 import ProductList from "../Products/ProductList";
