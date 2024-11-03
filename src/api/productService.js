@@ -1,10 +1,9 @@
 // const env = import.meta.env.VITE_API_HOST;
-
 // Product services
 export async function getProduct(productId) {
   try {
     const response = await fetch(
-      "https://nexufy.azurewebsites.net/api/product/" + productId,
+      "https://nexufy-2.onrender.com/api/product/" + productId,
       {
         headers: {
           accept: "application/json",
@@ -30,7 +29,7 @@ export async function getProduct(productId) {
 export async function getAllProducts() {
   try {
     const res = await fetch(
-      "https://nexufy.azurewebsites.net/api/products/all",
+      "https://nexufy-2.onrender.com/api/products/all",
       {
         headers: {
           accept: "application/json",
@@ -51,7 +50,7 @@ export async function getAllProducts() {
 export async function postProduct(newProduct, token) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/products",
+      "https://nexufy-2.onrender.com/api/products",
       {
         method: "POST",
         headers: {
@@ -65,7 +64,7 @@ export async function postProduct(newProduct, token) {
       throw new Error("Network response was not ok");
     }
   } catch (error) {
-    console.error("Failed to fetch product:", error);
+    console.error("Failed to post product:", error);
     throw error;
   }
 }
@@ -74,7 +73,7 @@ export async function postProduct(newProduct, token) {
 export async function getComments(productId) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/rating-comments/product/" +
+      "https://nexufy-2.onrender.com/api/rating-comments/product/" +
         productId,
       {
         headers: {
@@ -96,7 +95,7 @@ export async function getComments(productId) {
 export async function postComments(commentData) {
   try {
     const response = await fetch(
-      "http://nexufy.azurewebsites.net/api/rating-comments",
+      "https://nexufy-2.onrender.com/api/rating-comments",
       {
         method: "POST",
         headers: {
@@ -113,3 +112,4 @@ export async function postComments(commentData) {
     console.log("Failed to send Comment ", error);
   }
 }
+
