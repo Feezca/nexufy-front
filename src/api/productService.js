@@ -1,9 +1,8 @@
-// const env = import.meta.env.VITE_API_HOST;
 // Product services
 export async function getProduct(productId) {
   try {
     const response = await fetch(
-      "https://nexufy-2.onrender.com/api/product/" + productId,
+      "https://nexufy-2.onrender.com/api/products/" + productId, // Actualizado para /api/products/
       {
         headers: {
           accept: "application/json",
@@ -29,7 +28,7 @@ export async function getProduct(productId) {
 export async function getAllProducts() {
   try {
     const res = await fetch(
-      "https://nexufy-2.onrender.com/api/products/all",
+      "https://nexufy-2.onrender.com/api/products", // Actualizado para /api/products si /all no existe
       {
         headers: {
           accept: "application/json",
@@ -63,6 +62,7 @@ export async function postProduct(newProduct, token) {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
+    return await response.json(); // Devuelve la respuesta si necesitas procesarla
   } catch (error) {
     console.error("Failed to post product:", error);
     throw error;
@@ -73,8 +73,7 @@ export async function postProduct(newProduct, token) {
 export async function getComments(productId) {
   try {
     const response = await fetch(
-      "https://nexufy-2.onrender.com/api/rating-comments/product/" +
-        productId,
+      "https://nexufy-2.onrender.com/api/rating-comments/product/" + productId, // Verificar que el endpoint en el backend es correcto
       {
         headers: {
           accept: "application/json",
@@ -108,8 +107,10 @@ export async function postComments(commentData) {
     if (!response.ok) {
       throw new Error("Error en el envío del comentario");
     }
+    return await response.json(); // Devuelve la respuesta si necesitas procesarla
   } catch (error) {
     console.log("Failed to send Comment ", error);
+    throw error;
   }
 }
 
