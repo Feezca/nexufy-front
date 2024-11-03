@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../themes/ThemeContext";
 import { LanguageContext } from "../themes/LanguageContext";
 import translations from "../themes/translations";
@@ -17,26 +17,25 @@ const ProductCard = ({
   category,
   isOwner,
   isSuperAdmin,
-  confirmDelete, // Recibir confirmDelete como prop
+  confirmDelete,
 }) => {
   const { darkMode } = useContext(ThemeContext);
   const { language } = useContext(LanguageContext);
   const t = translations[language];
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    setIsEdit(location.pathname === "/admin/publicaciones");
+  }, [location.pathname]);
 
   const handleDetail = () => {
     navigate(`/product/${id}`, {
       state: {
-        product: {
-          id,
-          image,
-          name,
-          description,
-          price,
-          category,
-        },
+        product: { id, image, name, description, price, category },
       },
     });
   };
@@ -85,51 +84,29 @@ const ProductCard = ({
         alt={t.imageLabel}
         style={{ height: "12rem", objectFit: "cover" }}
       />
-      <Card.Body
-        className={`bg-secundario d-flex flex-column justify-content-between`}
-      >
+      <Card.Body className="bg-secundario d-flex flex-column justify-content-between">
         <div>
           <Card.Title
-            className={`fw-semibold ${
-              darkMode ? "text-white" : "text-primary"
-            }`}
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
+            className={`fw-semibold ${darkMode ? "text-white" : "text-primary"}`}
+            style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
           >
             {name}
           </Card.Title>
           <Card.Text
-            className={`fw-medium lh-sm ${
-              darkMode ? "text-white" : "text-secondary"
-            }`}
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
+            className={`fw-medium lh-sm ${darkMode ? "text-white" : "text-secondary"}`}
+            style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
           >
             {description}
           </Card.Text>
-          <Card.Text
-            className={`fw-semibold mb-0 ${
-              darkMode ? "text-white" : "text-primary"
-            }`}
-          >
+          <Card.Text className={`fw-semibold mb-0 ${darkMode ? "text-white" : "text-primary"}`}>
             $ {price}
           </Card.Text>
-          <Card.Text
-            className={`fw-medium ${
-              darkMode ? "text-white" : "text-secondary"
-            }`}
-          >
+          <Card.Text className={`fw-medium ${darkMode ? "text-white" : "text-secondary"}`}>
             {category}
           </Card.Text>
         </div>
 
-        {(isOwner || isSuperAdmin) && (
+        {(isEdit && (isOwner || isSuperAdmin)) && (
           <div className="d-flex justify-content-center gap-2 mt-3">
             <Button
               onClick={handleEdit}
