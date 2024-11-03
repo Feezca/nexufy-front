@@ -69,22 +69,22 @@ const AbmUsers = () => {
   }
 
   const userColumns = [
-    {
-      header: "Nombre de usuario",
-      accessor: "username",
-      render: (item) => item.username,
-    },
-    {
-      header: "Email",
-      accessor: "email",
-      render: (item) => item.email,
-    },
-    {
-      header: "Rol",
-      accessor: "roles",
-      render: (item) => item.roles[0]?.name.split("_")[1],
-    },  
-  ];
+  {
+    header: "Nombre de usuario",
+    accessor: "username",
+    render: (item) => item.username,
+  },
+  {
+    header: "Email",
+    accessor: "email",
+    render: (item) => item.email,
+  },
+  {
+    header: "Rol",
+    accessor: "roles",
+    render: (item) => (item.roles[0]?.name ? item.roles[0].name.split("_")[1] : ""),
+  },  
+];
 
   const handleEdit = (updatedUser) => {
     setUsers((prevUsers) =>
