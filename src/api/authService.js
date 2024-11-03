@@ -1,7 +1,7 @@
 export async function loginService(formData) {
   try {
     const response = await fetch(
-      "https://nexufy.azurewebsites.net/api/auth/login",
+      "https://nexufy-2.onrender.com/api/auth/login",
       {
         method: "POST",
         mode: "cors",
@@ -32,7 +32,7 @@ export async function loginService(formData) {
 export async function registerService(formData) {
   try {
     const response = await fetch(
-      "https://nexufy.azurewebsites.net/api/auth/register",
+      "https://nexufy-2.onrender.com/api/auth/register",
       {
         method: "POST",
         headers: {
@@ -52,3 +52,4 @@ export async function registerService(formData) {
     throw error;
   }
 }
+
