@@ -1,8 +1,8 @@
-// get products by customer service
+// Get products by customer service
 export async function getProductsByCustomerId(customerId, token) {
   try {
     const response = await fetch(
-      `https://nexufy.azurewebsites.net/api/customer/${customerId}/products`,
+      `https://nexufy-2.onrender.com/api/customer/${customerId}/products`,
       {
         headers: {
           accept: "application/json",
@@ -26,7 +26,7 @@ export async function getProductsByCustomerId(customerId, token) {
 export async function getCustomerById(customerId, token) {
   try {
     const response = await fetch(
-      `https://nexufy.azurewebsites.net/api/customer/${customerId}`,
+      `https://nexufy-2.onrender.com/api/customer/${customerId}`,
       {
         headers: {
           accept: "application/json",
@@ -50,7 +50,7 @@ export async function getCustomerById(customerId, token) {
 export async function getAllCustomers(token) {
   try {
     const response = await fetch(
-      "https://nexufy.azurewebsites.net/api/customer/all",
+      "https://nexufy-2.onrender.com/api/customer/all",
       {
         headers: {
           accept: "application/json",
@@ -70,10 +70,11 @@ export async function getAllCustomers(token) {
     throw error;
   }
 }
+
 export async function updateCustomerProfile(customerId, token, profileData) {
   try {
     const response = await fetch(
-      `https://nexufy.azurewebsites.net/api/customer/profile/${customerId}`,
+      `https://nexufy-2.onrender.com/api/customer/profile/${customerId}`,
       {
         method: "PUT",
         headers: {
@@ -95,3 +96,4 @@ export async function updateCustomerProfile(customerId, token, profileData) {
     throw error;
   }
 }
+
