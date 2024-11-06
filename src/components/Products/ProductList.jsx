@@ -50,8 +50,7 @@ const ProductList = ({ products, fetchUserProducts }) => {
         xs={1}
         md={2}
         lg={3}
-        className="g-4 mx-auto mb-6 justify-content-center"
-        style={{ rowGap: "3rem", columnGap: "3rem" }}
+        className="mb-6 justify-content-around"
       >
         {products.map((product) => (
           <Col key={product.id} className="d-flex justify-content-center">

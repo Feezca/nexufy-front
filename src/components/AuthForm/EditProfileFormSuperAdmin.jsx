@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { updateCustomerProfile } from "../../api/customerService";
@@ -12,7 +12,7 @@ import useLanguage from "../themes/useLanguage"; // Importar el hook useLanguage
 
 const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
   const { t, language } = useLanguage(); // Desestructurar t y language desde useLanguage
-  const [formData, setFormData] = useState(initialData);
+  const [formData, setFormData] = useState({...initialData});
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [suspensionEndDate, setSuspensionEndDate] = useState(
@@ -23,6 +23,9 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+
+  console.log("formData: ",formData)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
