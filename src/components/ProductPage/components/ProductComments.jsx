@@ -1,14 +1,11 @@
-// ProductComments.js
 import React, { useEffect, useState, useContext } from "react";
 import { getComments } from "../../../api/productService";
-import { ThemeContext } from "../../themes/ThemeContext"; // Importar el ThemeContext
-import { LanguageContext } from "../../themes/LanguageContext"; // Importar el LanguageContext
-import translations from "../../themes/translations"; // Importar las traducciones
+import { ThemeContext } from "../../themes/ThemeContext";
+import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
 
 const ProductComments = ({ productId }) => {
-  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
-  const t = translations[language]; // Obtener las traducciones correspondientes
+  const { darkMode } = useContext(ThemeContext);
+  const { t, language } = useLanguage(); // Usar el hook useLanguage para obtener traducciones y el idioma actual
 
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

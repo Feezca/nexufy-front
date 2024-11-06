@@ -224,3 +224,34 @@ body {
 .boton-filtro:hover {
   background-color: #4b555e;
 }
+
+.rowTable{
+  border-radius: 15px;
+}
+.rowTable:hover{
+  background-color: #568bdb;
+  cursor: default;
+  color: #f1f1e6;
+}
+
+.dropdown-menu {
+  position: absolute;
+  cursor: pointer;
+  top: 100%;
+  left: 0;
+  display: block;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Para asegurar que esté por encima de otros elementos */
+}
+
+.btn-options{
+  cursor: pointer;
+}
+.hidden {
+  display: none;
+}
+
+.dropdown-item:hover{
+  background-color: #dddbdb;
+}

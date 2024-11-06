@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../themes/ThemeContext";
+import useLanguage from "../themes/useLanguage"; // Importar el hook useLanguage
 
 const AuthForm = ({
   title,
@@ -13,6 +14,7 @@ const AuthForm = ({
   errorMessage,
 }) => {
   const { darkMode } = useContext(ThemeContext);
+  const { t, language } = useLanguage(); // Obtener las traducciones correspondientes usando el hook
 
   // Estado para errores en los campos
   const [errors, setErrors] = useState({});
@@ -22,11 +24,14 @@ const AuthForm = ({
     let error = "";
 
     if (name === "username" && !/^[a-zA-Z0-9]{6,}$/.test(value)) {
-      error = "El nombre de usuario debe tener al menos 6 caracteres alfanuméricos.";
+      error = t.usernameValidationError;
     } else if (name === "password" && value.length < 6) {
-      error = "La contraseña debe tener al menos 6 caracteres.";
-    } else if (name === "email" && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
-      error = "Ingrese un email válido.";
+      error = t.passwordValidationError;
+    } else if (
+      name === "email" &&
+      !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)
+    ) {
+      error = t.emailValidationError;
     }
 
     setErrors((prevErrors) => ({
@@ -93,7 +98,12 @@ const AuthForm = ({
                     onChange={handleInputChange}
                   />
                   {errors[field.id] && (
-                    <div  style={{fontSize:"14px"}} className="text-danger mt-1">{errors[field.id]}</div>
+                    <div
+                      style={{ fontSize: "14px" }}
+                      className="text-danger mt-1"
+                    >
+                      {errors[field.id]}
+                    </div>
                   )}
                 </div>
               ))}

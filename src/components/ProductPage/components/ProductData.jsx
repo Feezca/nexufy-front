@@ -1,14 +1,11 @@
-// ProductData.js
 import { useContext } from "react";
 import { Table } from "react-bootstrap";
-import { ThemeContext } from "../../themes/ThemeContext"; // Ruta corregida
-import { LanguageContext } from "../../themes/LanguageContext"; // Importar el LanguageContext
-import translations from "../../themes/translations"; // Importar las traducciones
+import { ThemeContext } from "../../themes/ThemeContext";
+import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
 
 const ProductData = ({ description }) => {
-  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
-  const t = translations[language]; // Obtener las traducciones correspondientes
+  const { darkMode } = useContext(ThemeContext);
+  const { t } = useLanguage(); // Usar el hook useLanguage para obtener las traducciones
 
   return (
     <div className="container mt-4">

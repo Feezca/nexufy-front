@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { updateCustomerProfile } from "../../api/customerService";
@@ -8,15 +8,10 @@ import {
   deleteCustomer,
 } from "../../api/adminService";
 import moment from "moment";
-import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import { LanguageContext } from "../themes/LanguageContext";
-import translations from "../themes/translations";
+import useLanguage from "../themes/useLanguage"; // Importar el hook useLanguage
 
 const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
-  const { user } = useContext(AuthenticationContext);
-  const { language } = useContext(LanguageContext);
-  const t = translations[language];
-
+  const { t, language } = useLanguage(); // Desestructurar t y language desde useLanguage
   const [formData, setFormData] = useState(initialData);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
@@ -33,7 +28,7 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
     e.preventDefault();
     setErrorMessage(null);
     try {
-      const token = user?.token || localStorage.getItem("token");
+      const token = localStorage.getItem("token"); // Asumiendo que el token está almacenado en localStorage
       await updateCustomerProfile(formData.id, token, formData);
       setSuccessMessage(t.changesSavedSuccessfully);
       onSave(formData);
@@ -82,14 +77,19 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
     }
   };
 
-  const isOwnProfile = user && user.id === formData.id;
+  const isOwnProfile = false; // Asumiendo que en SuperAdmin nunca es propio perfil
 
   return (
     <Form onSubmit={handleSubmit}>
       <Row>
         <Col md={6}>
           <Form.Group controlId="formName">
-            <Form.Label>{t.nameLabel}</Form.Label>
+            <Form.Label
+              className=" text-secondary"
+              style={{ fontSize: "12px" }}
+            >
+              {t.nameLabel}
+            </Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -100,7 +100,12 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
           </Form.Group>
 
           <Form.Group controlId="formEmail">
-            <Form.Label>{t.emailLabel}</Form.Label>
+            <Form.Label
+              className=" text-secondary"
+              style={{ fontSize: "12px" }}
+            >
+              {t.emailLabel}
+            </Form.Label>
             <Form.Control
               type="email"
               name="email"
@@ -111,7 +116,12 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
           </Form.Group>
 
           <Form.Group controlId="formAddress">
-            <Form.Label>{t.addressLabel}</Form.Label>
+            <Form.Label
+              className=" text-secondary"
+              style={{ fontSize: "12px" }}
+            >
+              {t.addressLabel}
+            </Form.Label>
             <Form.Control
               type="text"
               name="address"
@@ -123,7 +133,12 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
 
         <Col md={6}>
           <Form.Group controlId="formLastname">
-            <Form.Label>{t.lastnameLabel}</Form.Label>
+            <Form.Label
+              className=" text-secondary"
+              style={{ fontSize: "12px" }}
+            >
+              {t.lastnameLabel}
+            </Form.Label>
             <Form.Control
               type="text"
               name="lastname"
@@ -133,7 +148,12 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
           </Form.Group>
 
           <Form.Group controlId="formPhone">
-            <Form.Label>{t.phoneLabel}</Form.Label>
+            <Form.Label
+              className=" text-secondary"
+              style={{ fontSize: "12px" }}
+            >
+              {t.phoneLabel}
+            </Form.Label>
             <Form.Control
               type="text"
               name="phone"
@@ -143,7 +163,12 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
           </Form.Group>
 
           <Form.Group controlId="formUsername">
-            <Form.Label>{t.usernameLabel}</Form.Label>
+            <Form.Label
+              className=" text-secondary"
+              style={{ fontSize: "12px" }}
+            >
+              {t.usernameLabel}
+            </Form.Label>
             <Form.Text
               className="form-control"
               style={{
@@ -171,22 +196,36 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
       )}
 
       {!isOwnProfile && (
-        <Row className="mt-4">
+        <Row>
           <Col>
-            <Button
-              variant="danger"
-              onClick={() => handleSuspend(7)}
-              className="me-2"
-            >
-              {t.suspendForDays.replace("{days}", 7)}
-            </Button>
-            <Button
-              variant="danger"
-              onClick={() => handleSuspend(30)}
-              className="me-2"
-            >
-              {t.suspendForDays.replace("{days}", 30)}
-            </Button>
+            <Form.Group className="w-25" controlId="formUsername">
+              <Form.Label
+                className="fw-semibold text-body-tertiary"
+                style={{ fontSize: "14px" }}
+              >
+                {t.suspendLabel}
+              </Form.Label>
+              <Form.Select
+                aria-label="Default select example"
+                onChange={(e) => {
+                  const days = parseInt(e.target.value, 10);
+                  if (days) handleSuspend(days); // Solo llama a la función si `days` es un número
+                }}
+              >
+                <option value="">{t.suspendTime}</option>
+                <option value="7">
+                  {t.suspendForDays.replace("{days}", 7)}
+                </option>
+                <option value="30">
+                  {t.suspendForDays.replace("{days}", 30)}
+                </option>
+              </Form.Select>
+            </Form.Group>
+
+            {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
+            {successMessage && (
+              <p className="text-success mt-3">{successMessage}</p>
+            )}
 
             {formData.suspended && (
               <Button
@@ -198,23 +237,28 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
               </Button>
             )}
 
-            <Button variant="outline-danger" onClick={handleDelete}>
+            <Button
+              variant="link"
+              className="text-danger fw-semibold opacity-50 mt-4"
+              onClick={handleDelete}
+            >
               {t.deleteUser}
             </Button>
           </Col>
         </Row>
       )}
 
-      {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
-      {successMessage && <p className="text-success mt-3">{successMessage}</p>}
-
-      <Row className="mt-3">
-        <Col>
+      <Row className="mt-3 w-100  ">
+        <Col className="d-flex justify-content-end ">
+          <Button
+            variant="link"
+            className="text-secondary fw-medium"
+            onClick={onCancel}
+          >
+            {t.confirmDeleteCancelButton}
+          </Button>
           <Button variant="primary" type="submit" className="me-2">
             {t.saveChangesButton}
-          </Button>
-          <Button variant="secondary" onClick={onCancel}>
-            {t.confirmDeleteCancelButton}
           </Button>
         </Col>
       </Row>

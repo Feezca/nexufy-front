@@ -2,14 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import ProductList from "./ProductList";
 import { ThemeContext } from "../themes/ThemeContext";
 import { Link } from "react-router-dom";
-import { LanguageContext } from "../themes/LanguageContext";
-import translations from "../themes/translations";
+import useLanguage from "../themes/useLanguage"; // Importar el hook personalizado
 import { getAllProducts } from "../../api/productService";
 
 const FeaturedProduct = () => {
   const { darkMode } = useContext(ThemeContext);
-  const { language } = useContext(LanguageContext);
-  const t = translations[language];
+  const { t } = useLanguage(); // Usar el hook para obtener las traducciones
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,8 +16,8 @@ const FeaturedProduct = () => {
       try {
         console.log("Fetching all products...");
         const data = await getAllProducts();
-        console.log("Fetched products:", data); // Verificar la carga de productos
-        setProducts(data.slice(0, 3)); // Tomar solo los primeros 3 productos
+        console.log("Fetched products:", data);
+        setProducts(data.slice(0, 3));
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {

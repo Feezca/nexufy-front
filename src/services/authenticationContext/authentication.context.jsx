@@ -34,8 +34,8 @@ export const AuthenticationContextProvider = ({ children }) => {
         user.id,
         localStorage.getItem("token")
       );
-      localStorage.setItem("user", JSON.stringify(updatedUser)); // Actualiza localStorage
-      setUser(updatedUser); // Actualiza el estado del contexto
+      localStorage.setItem("user", JSON.stringify(updatedUser)); 
+      setUser(updatedUser); 
     } catch (error) {
       console.error("Error al recargar los datos del usuario:", error);
     }

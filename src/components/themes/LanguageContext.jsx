@@ -1,22 +1,13 @@
-import { createContext, useState, useEffect } from "react";
+import React, { createContext } from "react";
+import useLanguageState from "./useLanguageState"; // Importar el nuevo hook
 
 export const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState(
-    localStorage.getItem("language") || "es"
-  );
-
-  useEffect(() => {
-    localStorage.setItem("language", language);
-  }, [language]);
-
-  const toggleLanguage = () => {
-    setLanguage((prevLanguage) => (prevLanguage === "es" ? "en" : "es"));
-  };
+  const { language, toggleLanguage, t } = useLanguageState(); // Usar el hook para obtener el estado
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage }}>
+    <LanguageContext.Provider value={{ language, toggleLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

@@ -1,16 +1,14 @@
-import { Col, Nav, Row } from "react-bootstrap";
+import React, { useContext } from "react";
+import { Col, Row } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
-import { useContext } from "react";
 import { ThemeContext } from "../../themes/ThemeContext"; // Importar el ThemeContext
-import { LanguageContext } from "../../themes/LanguageContext"; // Importar el LanguageContext
 import { AuthenticationContext } from "../../../services/authenticationContext/authentication.context"; // Importar el contexto de autenticación
-import translations from "../../themes/translations"; // Importar las traducciones
+import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
 
 const Sidebar = () => {
   const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
   const { user } = useContext(AuthenticationContext); // Obtener la información del usuario autenticado
-  const t = translations[language]; // Obtener las traducciones correspondientes
+  const { t, language } = useLanguage(); // Desestructurar t y language desde useLanguage
 
   // Verificar si el usuario tiene el rol de ROLE_SUPERADMIN
   const isSuperAdmin = user?.roles.includes("ROLE_SUPERADMIN");
@@ -30,7 +28,7 @@ const Sidebar = () => {
       url: "/admin/publicaciones",
       active: false,
     },
-    // Solo agregar la opción de estadísticas si el usuario es SUPERADMIN
+
     ...(isSuperAdmin
       ? [
           {

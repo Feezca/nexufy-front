@@ -1,12 +1,15 @@
+// ProductCard.jsx
+
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../themes/ThemeContext";
 import { LanguageContext } from "../themes/LanguageContext";
-import translations from "../themes/translations";
+import translations, { categoryNameToIdMapping } from "../themes/translations";
 import Swal from "sweetalert2";
 import { deleteProduct } from "../../api/productService";
+import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 
 const ProductCard = ({
   id,
@@ -17,19 +20,32 @@ const ProductCard = ({
   category,
   isOwner,
   isSuperAdmin,
-  confirmDelete,
 }) => {
   const { darkMode } = useContext(ThemeContext);
   const { language } = useContext(LanguageContext);
+  const { user } = useContext(AuthenticationContext);
   const t = translations[language];
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Obtener el ID de la categoría usando el nombre
+  const categoryId = categoryNameToIdMapping[category];
+
+  // Obtener el nombre de la categoría en el idioma actual
+  const categoryData = t.categoriess.find((cat) => cat.id === categoryId);
+  const categoryNameInCurrentLanguage = categoryData
+    ? categoryData.name
+    : category;
+
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+
+
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
-    setIsEdit(location.pathname === "/admin/publicaciones");
+    if(location.pathname === "/admin/publicaciones"){
+      setIsEdit(true);
+    };
   }, [location.pathname]);
 
   const handleDetail = () => {
@@ -47,10 +63,7 @@ const ProductCard = ({
   }, [deleteSuccess]);
 
   const handleEdit = () => {
-    const editPath = isSuperAdmin
-      ? `/ceo/edit-product/${id}`
-      : `/edit-product/${id}`;
-    navigate(editPath);
+    navigate(`/edit-product/${id}`);
   };
 
   const handleDelete = () => {
@@ -65,10 +78,14 @@ const ProductCard = ({
       cancelButtonText: t.confirmDeleteCancelButton,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log(`Eliminando producto ${id}`);
-        await deleteProduct(id);
-        setDeleteSuccess(true);
-        Swal.fire(t.deletedSuccess, t.deletedProductMessage, "success");
+        try {
+          await deleteProduct(id);
+          setDeleteSuccess(true);
+          Swal.fire(t.deletedSuccess, t.deletedProductMessage, "success");
+        } catch (error) {
+          console.error("Error eliminando el producto:", error);
+          Swal.fire(t.errorDelete, error.message, "error");
+        }
       }
     });
   };
@@ -101,7 +118,11 @@ const ProductCard = ({
           <Card.Text className={`fw-semibold mb-0 ${darkMode ? "text-white" : "text-primary"}`}>
             $ {price}
           </Card.Text>
-          <Card.Text className={`fw-medium ${darkMode ? "text-white" : "text-secondary"}`}>
+          <Card.Text
+            className={`fw-medium ${
+              darkMode ? "text-white" : "text-secondary"
+            }`}
+          >
             {category}
           </Card.Text>
         </div>

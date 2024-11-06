@@ -1,15 +1,12 @@
-// ProductCommentsForm.js
 import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
-import { sendComments } from "@/services/commentService"; // Asegúrate de que la ruta sea correcta
-import { ThemeContext } from "../themes/ThemeContext"; // Importar el ThemeContext
-import { LanguageContext } from "../themes/LanguageContext"; // Importar el LanguageContext
-import translations from "../themes/translations"; // Importar las traducciones
+import { sendComments } from "@/services/commentService";
+import { ThemeContext } from "../themes/ThemeContext";
+import useLanguage from "../themes/useLanguage"; // Importar el hook useLanguage
 
 const ProductCommentsForm = ({ productId }) => {
-  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
-  const t = translations[language]; // Obtener las traducciones correspondientes
+  const { darkMode } = useContext(ThemeContext);
+  const { t } = useLanguage(); // Usar el hook useLanguage para obtener las traducciones
 
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState("1");
@@ -24,14 +21,14 @@ const ProductCommentsForm = ({ productId }) => {
     setSuccess(null);
 
     const commentData = {
-      productId: productId, // Usa el productId pasado como prop
+      productId: productId,
       text: newComment,
       rating: parseInt(rating, 10),
     };
     console.log(commentData);
 
     try {
-      await sendComments(commentData); // Llama a la función sendComments
+      await sendComments(commentData);
       setSuccess(t.commentSuccess);
       setNewComment("");
       setRating("1");
@@ -55,7 +52,7 @@ const ProductCommentsForm = ({ productId }) => {
             placeholder={t.commentPlaceholder}
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            className={darkMode ? "bg-dark text-light" : "bg-light text-dark"} // Ajuste de colores según el modo
+            className={darkMode ? "bg-dark text-light" : "bg-light text-dark"}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="rating">
@@ -66,7 +63,7 @@ const ProductCommentsForm = ({ productId }) => {
             aria-label={t.selectRatingAriaLabel}
             value={rating}
             onChange={(e) => setRating(e.target.value)}
-            className={darkMode ? "bg-dark text-light" : "bg-light text-dark"} // Ajuste de colores según el modo
+            className={darkMode ? "bg-dark text-light" : "bg-light text-dark"}
           >
             <option value="1">{t.ratingOptions[1]}</option>
             <option value="2">{t.ratingOptions[2]}</option>

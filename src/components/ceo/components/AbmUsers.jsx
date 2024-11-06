@@ -1,18 +1,18 @@
+// AbmUsers.jsx
+
 import { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { deleteCustomer, registerAdminUser } from "../../../api/adminService";
 import {
   getAllCustomers,
-  searchCustomers,
   updateCustomerProfile,
 } from "../../../api/customerService";
 import CreateUserForm from "../../AuthForm/CreateUserForm";
 import { ThemeContext } from "../../themes/ThemeContext";
-import { LanguageContext } from "../../themes/LanguageContext";
+import useLanguage from "../../themes/useLanguage"; // Importa el hook useLanguage
 import CustomTable from "./CustomTable";
 import SearchBar from "./SearchBar";
-import translations from "../../themes/translations";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import EditProfileFormUserAdmin from "../../AuthForm/EditProfileFormUserAdmin";
 import EditProfileFormSuperAdmin from "../../AuthForm/EditProfileFormSuperAdmin";
@@ -23,20 +23,27 @@ import useSearch from "../../../hooks/useSearch";
 const AbmUsers = () => {
   const { user } = useContext(AuthenticationContext);
   const { darkMode } = useContext(ThemeContext);
-  const { language } = useContext(LanguageContext);
-  const t = translations[language];
+  const { t } = useLanguage(); // Obtener las traducciones directamente con el hook
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [openNewUser, setOpenNewUser] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [error, setError] = useState(null); // Agrega el estado de error aquí
+  const [error, setError] = useState(null);
 
-  const token = localStorage.getItem("token"); // Declara el token aquí
-  const { searchQuery, setSearchQuery, filteredSearch } = useSearch("", users, token, "customers");
+  const token = localStorage.getItem("token");
+  const { searchQuery, setSearchQuery, filteredSearch } = useSearch(
+    "",
+    users,
+    token,
+    "customers"
+  );
+  const [activeDropdown, setActiveDropdown] = useState(null); // Estado para controlar el menú activo
+
+  // Determinar si el usuario actual es Super Admin
+  const isSuperAdmin = user?.roles.includes("ROLE_SUPERADMIN");
 
   const handleCreateClick = () => {
     setOpenNewUser(true);
@@ -47,7 +54,6 @@ const AbmUsers = () => {
       try {
         const customers = await getAllCustomers(token);
         setUsers(customers);
-        setFilteredUsers(customers);
       } catch (error) {
         setError(error);
       } finally {
@@ -65,13 +71,32 @@ const AbmUsers = () => {
       await registerAdminUser(newUser, token);
       setOpenNewUser(false);
       await fetchAllCustomers();
+      Swal.fire({
+        icon: "success",
+        title: t.userCreatedSuccessfully,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       console.error(error);
       setError(error);
+      Swal.fire(t.error, error.message, "error");
     }
   };
 
   const handleEdit = (selectedUser) => {
+    // Verificar si el usuario actual está intentando editar su propio perfil
+    const isEditingOwnProfile = selectedUser.id === user.id;
+
+    // Si el usuario no es Super Admin y está intentando editar a otro usuario, mostrar error
+    if (!isSuperAdmin && !isEditingOwnProfile) {
+      Swal.fire({
+        icon: "error",
+        title: t.permissionDeniedTitle,
+        text: t.permissionDeniedMessage,
+      });
+      return;
+    }
     setSelectedUser(selectedUser);
     setIsEditing(true);
   };
@@ -91,6 +116,7 @@ const AbmUsers = () => {
       });
     } catch (error) {
       setError(error);
+      Swal.fire(t.error, error.message, "error");
     }
   };
 
@@ -119,9 +145,8 @@ const AbmUsers = () => {
   const handleConfirmDelete = async (id) => {
     try {
       await deleteCustomer(id, token);
-      setFilteredUsers((prevUsers) =>
-        prevUsers.filter((user) => user.id !== id)
-      );
+      // Actualizamos el estado 'users' eliminando el usuario eliminado
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
       Swal.fire(t.deleted, t.successMessage, "success");
     } catch (error) {
       setError(error);
@@ -143,7 +168,10 @@ const AbmUsers = () => {
     return <p className="text-danger">{error.message}</p>;
   }
 
-  const isOwnProfile = selectedUser && selectedUser.id === user.id;
+  const toggleDropdown = (id) => {
+    console.log("Toggling dropdown for id:", id); // Verifica el id
+    setActiveDropdown((prev) => (prev === id ? null : id));
+  };
 
   return (
     <div
@@ -153,21 +181,27 @@ const AbmUsers = () => {
       style={{ borderRadius: "20px" }}
     >
       {isEditing ? (
-        isOwnProfile ? (
-          <EditProfileFormUserAdmin
+        // Determinar qué formulario mostrar
+        isSuperAdmin && selectedUser.id !== user.id ? (
+          // Si es superadministrador y está editando el perfil de otro usuario, mostrar EditProfileFormSuperAdmin
+          <EditProfileFormSuperAdmin
             initialData={selectedUser}
             onSave={handleSaveEdit}
             onCancel={handleCancelEdit}
           />
         ) : (
-          <EditProfileFormSuperAdmin
+          // De lo contrario, mostrar EditProfileFormUserAdmin
+          <EditProfileFormUserAdmin
             initialData={selectedUser}
             onSave={handleSaveEdit}
             onCancel={handleCancelEdit}
           />
         )
       ) : openNewUser ? (
-        <CreateUserForm onSave={handleSave} />
+        <CreateUserForm
+          onSave={handleSave}
+          onCancel={() => setOpenNewUser(false)}
+        />
       ) : (
         <>
           <div className="d-flex justify-content-between align-items-center mb-2">
@@ -211,24 +245,60 @@ const AbmUsers = () => {
                     : t.noRole,
               },
               {
-                header: t.actions,
+                header: "",
                 accessor: "actions",
                 render: (item) => (
-                  <div style={{ display: "flex", gap: "0.5rem" }}>
-                    <Button
-                      style={{ height: "22px", width: "22px", padding: "0" }}
-                      variant="link"
-                      onClick={() => handleEdit(item)}
-                    >
-                      <FaEdit />
-                    </Button>
-                    <Button
-                      style={{ height: "22px", width: "22px", padding: "0" }}
-                      variant="link"
-                      onClick={() => confirmDeleteCustomer(item.id)}
-                    >
-                      <FaTrash style={{ color: "red" }} />
-                    </Button>
+                  <div
+                    className="btn-options"
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
+                    <i
+                      className="bi bi-three-dots"
+                      onClick={() => toggleDropdown(item.id)}
+                    />
+                    {activeDropdown === item.id &&
+                      isSuperAdmin &&
+                      item.id !== user.id && (
+                        <div
+                          className={`dropdown-menu ${
+                            darkMode ? "bg-dark text-light" : "bg-light"
+                          }`}
+                          style={{
+                            position: "absolute",
+                            top: "100%",
+                            left: "0",
+                            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+
+                            borderRadius: "4px",
+                          }}
+                        >
+                          
+                            <button
+                              className="dropdown-item"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.5rem",
+                              }}
+                              onClick={() => handleEdit(item)}
+                            >
+                              {t.edit}
+                            </button>
+                            <button
+                              className="dropdown-item"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "red",
+                                gap: "0.5rem",
+                              }}
+                              onClick={() => confirmDeleteCustomer(item.id)}
+                            >
+                              {" "}
+                              {t.delete}
+                            </button>
+                        </div>
+                      )}
                   </div>
                 ),
               },

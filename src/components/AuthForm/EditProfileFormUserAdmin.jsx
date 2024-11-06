@@ -1,8 +1,8 @@
 import { useState, useContext } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { LanguageContext } from "../themes/LanguageContext";
-import translations from "../themes/translations";
+import useLanguage from "../themes/useLanguage";
+
 import {
   promoteToAdmin,
   updateCustomerProfile,
@@ -11,6 +11,7 @@ import { AuthenticationContext } from "../../services/authenticationContext/auth
 
 const EditProfileFormUserAdmin = ({ initialData, onSave, onCancel }) => {
   const { user, reloadUserData } = useContext(AuthenticationContext);
+  const { t, language } = useLanguage();
   const token = user?.token || localStorage.getItem("token");
 
   const [formData, setFormData] = useState({
@@ -21,9 +22,6 @@ const EditProfileFormUserAdmin = ({ initialData, onSave, onCancel }) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [promoteMessage, setPromoteMessage] = useState(null);
-
-  const { language } = useContext(LanguageContext);
-  const t = translations[language];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,6 +46,9 @@ const EditProfileFormUserAdmin = ({ initialData, onSave, onCancel }) => {
     setPromoteMessage(null);
     try {
       await promoteToAdmin(user.username, token);
+      // Actualizar roles en formData
+      const updatedRoles = [...formData.roles, "ROLE_ADMIN"];
+      setFormData({ ...formData, roles: updatedRoles });
       setPromoteMessage(t.promoteSuccessMessage);
       await reloadUserData();
     } catch (error) {
@@ -55,6 +56,7 @@ const EditProfileFormUserAdmin = ({ initialData, onSave, onCancel }) => {
     }
   };
 
+  // Recalcular isUser y isAdmin después de actualizar formData.roles
   const isUser = formData.roles.includes("ROLE_USER");
   const isAdmin = formData.roles.includes("ROLE_ADMIN");
 
@@ -140,6 +142,7 @@ const EditProfileFormUserAdmin = ({ initialData, onSave, onCancel }) => {
         </Col>
       </Row>
 
+      {/* Mostrar el botón solo si el usuario es ROLE_USER y no es ROLE_ADMIN */}
       {isUser && !isAdmin && (
         <Button
           variant="warning"

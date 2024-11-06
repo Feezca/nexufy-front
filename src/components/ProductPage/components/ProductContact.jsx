@@ -1,25 +1,22 @@
-// ProductContact.js
 import { useState, useEffect, useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { AuthenticationContext } from "../../../services/authenticationContext/authentication.context";
-import { ThemeContext } from "../../themes/ThemeContext"; // Importar el ThemeContext
-import { LanguageContext } from "../../themes/LanguageContext"; // Importar el LanguageContext
-import translations from "../../themes/translations"; // Importar las traducciones
-import { getSellerContact } from "../../../api/productService"; // Importa la nueva función
+import { ThemeContext } from "../../themes/ThemeContext";
+import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
+import { getSellerContact } from "../../../api/productService";
 
 const ProductContact = ({ customerId }) => {
   const { user } = useContext(AuthenticationContext);
-  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
-  const t = translations[language]; // Obtener las traducciones correspondientes
+  const { darkMode } = useContext(ThemeContext);
+  const { t } = useLanguage(); // Usar el hook useLanguage para obtener las traducciones
   const [sellerInfo, setSellerInfo] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    // Llamar al servicio para obtener la información del vendedor
+
     const fetchSellerInfo = async () => {
       try {
-        const data = await getSellerContact(customerId, token); // Usar el servicio en lugar de fetch directo
+        const data = await getSellerContact(customerId, token);
         setSellerInfo(data);
       } catch (error) {
         console.error("Error fetching seller info:", error);
@@ -64,7 +61,6 @@ const ProductContact = ({ customerId }) => {
             </Row>
             <Row>
               <Col>
-                {/* Botón de WhatsApp */}
                 <a
                   href={`https://wa.me/${sellerInfo?.phone}`}
                   target="_blank"
@@ -75,7 +71,6 @@ const ProductContact = ({ customerId }) => {
                 </a>
               </Col>
               <Col>
-                {/* Botón de Gmail */}
                 <a
                   href={`mailto:${sellerInfo?.email}`}
                   className="btn btn-outline-primary shadow rounded-pill w-100"
@@ -84,7 +79,6 @@ const ProductContact = ({ customerId }) => {
                 </a>
               </Col>
               <Col>
-                {/* Botón para llamada telefónica */}
                 <a
                   href={`tel:${sellerInfo?.phone}`}
                   className="btn btn-outline-primary shadow rounded-pill w-100"
@@ -93,7 +87,6 @@ const ProductContact = ({ customerId }) => {
                 </a>
               </Col>
               <Col>
-                {/* Botón de Google Maps */}
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                     sellerInfo?.address

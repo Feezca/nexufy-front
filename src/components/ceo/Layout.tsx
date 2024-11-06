@@ -2,19 +2,16 @@ import React, { useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 import { ThemeContext } from "../themes/ThemeContext";
-import { LanguageContext } from "../themes/LanguageContext"; // Importar LanguageContext
 import Sidebar from "./components/Sidebar";
 import ThemeToggle from "../themes/ThemeToggle"; // Importar el componente de cambio de tema
 import LanguageToggle from "../themes/LanguageToggle"; // Importar el componente de cambio de idioma
-import translations from "../themes/translations"; // Importar traducciones
+import useLanguage from "../themes/useLanguage"; // Importar el hook de idioma
 
 const CeoLayout = () => {
   const navigate = useNavigate();
   const { darkMode } = useContext(ThemeContext);
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual del contexto
+  const { t, language } = useLanguage(); // Usar el hook para obtener las traducciones
   const { user } = useContext(AuthenticationContext);
-
-  const t = translations[language]; // Obtener las traducciones basadas en el idioma
 
   const closeSession = () => {
     localStorage.removeItem("token");

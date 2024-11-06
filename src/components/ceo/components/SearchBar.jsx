@@ -1,24 +1,20 @@
-// SearchBar.js
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { LanguageContext } from "../../themes/LanguageContext"; // Importar el LanguageContext
-import translations from "../../themes/translations"; // Importar las traducciones
+import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
 
 const SearchBar = ({ searchQuery, setSearchQuery, darkMode }) => {
   const [debounceTimeOut, setDebounceTimeOut] = useState(null);
-
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
-  const t = translations[language]; // Obtener las traducciones correspondientes
+  const { t, language } = useLanguage(); // Obtener las traducciones directamente con el hook
 
   const handleInputSearch = (event) => {
     const value = event.target.value;
 
-    // debounceTimeOut es un temporizador que activa la búsqueda en tiempo real
+    // Limpiar el temporizador anterior para activar la búsqueda en tiempo real
     if (debounceTimeOut) {
       clearTimeout(debounceTimeOut);
     }
 
-    // Crear un temporizador para la nueva búsqueda
+    // Crear un nuevo temporizador para la búsqueda
     const timeout = setTimeout(() => {
       setSearchQuery(value); // Actualiza el query de búsqueda en el componente padre
     }, 0);

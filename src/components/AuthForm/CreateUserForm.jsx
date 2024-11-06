@@ -1,14 +1,13 @@
-import { useState, useContext } from "react";
+// CreateUserForm.jsx
+import { useState } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { LanguageContext } from "../themes/LanguageContext"; // Importar el LanguageContext
-import translations from "../themes/translations"; // Importar las traducciones
+import useLanguage from "../themes/useLanguage"; // Importar el hook useLanguage
 
-const CreateUserForm = ({ onSave }) => {
+const CreateUserForm = ({ onSave, onCancel }) => {
+  // Añadido onCancel
   const [formData, setFormData] = useState({});
-
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
-  const t = translations[language]; // Obtener las traducciones correspondientes
+  const { t, language } = useLanguage(); // Obtener las traducciones correspondientes usando el hook
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,8 +16,14 @@ const CreateUserForm = ({ onSave }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     onSave(formData);
+  };
+
+  const handleCancel = () => {
+    // Función para manejar la cancelación
+    if (onCancel) {
+      onCancel();
+    }
   };
 
   return (
@@ -56,15 +61,25 @@ const CreateUserForm = ({ onSave }) => {
           </Form.Group>
         </Col>
       </Row>
-      <Button variant="primary" type="submit" className="mt-3">
-        {t.saveButton}
-      </Button>
+      <div className="mt-3 d-flex justify-content-end">
+        <Button
+          variant="secondary"
+          onClick={handleCancel} // Llamada a handleCancel
+          className="me-2"
+        >
+          {t.cancelButton}{" "}
+        </Button>
+        <Button variant="primary" type="submit">
+          {t.saveButton}
+        </Button>
+      </div>
     </Form>
   );
 };
 
 CreateUserForm.propTypes = {
   onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func, // Añadido onCancel
 };
 
 export default CreateUserForm;

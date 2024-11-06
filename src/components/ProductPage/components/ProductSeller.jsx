@@ -1,17 +1,14 @@
-import React from "react";
-import { useContext, useEffect, useState } from "react";
-import img from "../../../assets/img/undraw_factory_dy0a-removebg-preview.png"; // Imagen del vendedor
+import React, { useContext, useEffect, useState } from "react";
+import img from "../../../assets/img/undraw_factory_dy0a-removebg-preview.png";
 import { AuthenticationContext } from "../../../services/authenticationContext/authentication.context";
 import { ThemeContext } from "../../themes/ThemeContext";
-import { LanguageContext } from "../../themes/LanguageContext"; // Importar el LanguageContext
-import translations from "../../themes/translations"; // Importar las traducciones
+import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
 import { getCustomerById } from "../../../api/customerService";
 
 const ProductSeller = ({ customerId }) => {
   const { user } = useContext(AuthenticationContext);
   const { darkMode } = useContext(ThemeContext);
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
-  const t = translations[language]; // Obtener las traducciones correspondientes
+  const { t } = useLanguage(); // Usar el hook useLanguage para obtener las traducciones
 
   const [seller, setSeller] = useState({});
 
@@ -35,17 +32,16 @@ const ProductSeller = ({ customerId }) => {
       }`}
       style={{ height: "auto", position: "relative", overflow: "hidden" }}
     >
-      {/* Estilo de fondo para pantallas pequeñas */}
       <div
         className={`position-absolute w-100 h-100 top-0 left-0 ${
           darkMode ? "bg-dark" : "bg-light"
         }`}
         style={{
-          backgroundImage: `url(${img})`, // Usa la misma imagen como fondo
+          backgroundImage: `url(${img})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.3, // Opacidad de la imagen
-          zIndex: -1, // Asegura que la imagen esté detrás del contenido
+          opacity: 0.3,
+          zIndex: -1,
         }}
       />
 
@@ -63,12 +59,8 @@ const ProductSeller = ({ customerId }) => {
                   }`}
                 >
                   {seller?.name} {seller?.lastname}
-                  <i className="bi bi-star-fill text-primary-custom me-1"></i>
-                  <i className="bi bi-star-fill text-primary-custom me-1"></i>
-                  <i className="bi bi-star-fill text-primary-custom"></i>
                 </p>
 
-                {/* Actualización de los textos de contacto, ventas y envíos */}
                 <p
                   className={`fw-semibold ${
                     darkMode ? "text-light" : "text-dark"
@@ -103,7 +95,7 @@ const ProductSeller = ({ customerId }) => {
               <img
                 src={img}
                 style={{ height: "auto" }}
-                className="mx-auto d-none d-lg-block" // Esconde la imagen en pantallas pequeñas
+                className="mx-auto d-none d-lg-block"
                 alt="Imagen del vendedor"
               />
             </div>

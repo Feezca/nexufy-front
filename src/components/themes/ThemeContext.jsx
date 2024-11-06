@@ -10,11 +10,11 @@ export const ThemeProvider = ({ children }) => {
     if (savedTheme === "true") {
       setDarkMode(true);
       document.body.classList.add("dark-mode");
-      document.body.classList.remove("light-mode"); // Asegurar que la clase light-mode se elimine
+      document.body.classList.remove("light-mode"); 
     } else {
       setDarkMode(false);
       document.body.classList.add("light-mode");
-      document.body.classList.remove("dark-mode"); // Asegurar que la clase dark-mode se elimine
+      document.body.classList.remove("dark-mode"); 
     }
   }, []);
 
@@ -28,7 +28,7 @@ export const ThemeProvider = ({ children }) => {
       document.body.classList.add("light-mode");
       document.body.classList.remove("dark-mode");
     }
-    localStorage.setItem("darkMode", newTheme ? "true" : "false"); // Guardar el estado como string
+    localStorage.setItem("darkMode", newTheme ? "true" : "false"); 
   };
 
   return (

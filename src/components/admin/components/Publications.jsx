@@ -1,3 +1,5 @@
+// Publications.jsx
+
 import { useEffect, useState, useContext } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 import ProductList from "../../Products/ProductList";
@@ -6,15 +8,13 @@ import { Button, Alert } from "react-bootstrap";
 import CreateProductForm from "./CreateProductForm";
 import { postProduct } from "../../../api/productService";
 import { ThemeContext } from "../../themes/ThemeContext";
-import { LanguageContext } from "../../themes/LanguageContext";
-import translations from "../../themes/translations";
+import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
 
 const Publications = () => {
   const { user } = useOutletContext();
   const navigate = useNavigate();
   const { darkMode } = useContext(ThemeContext);
-  const { language } = useContext(LanguageContext);
-  const t = translations[language];
+  const { t } = useLanguage(); // Usar el hook useLanguage para obtener las traducciones
 
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
@@ -25,6 +25,10 @@ const Publications = () => {
 
   const handleCreatePublication = () => {
     setOpenNewProduct(true);
+  };
+
+  const handleCancelCreation = () => {
+    setOpenNewProduct(false);
   };
 
   const fetchUserProducts = async () => {
@@ -88,7 +92,10 @@ const Publications = () => {
 
       {canPublish ? (
         openNewProduct ? (
-          <CreateProductForm onSave={handleSave} />
+          <CreateProductForm
+            onSave={handleSave}
+            onCancel={handleCancelCreation}
+          />
         ) : (
           <>
             <div className="d-flex justify-content-between align-items-center mb-4">

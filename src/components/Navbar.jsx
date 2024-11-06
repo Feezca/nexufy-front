@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import {
   Button,
   Dropdown,
@@ -10,15 +10,17 @@ import {
 } from "react-bootstrap";
 import { FaBars, FaSearch, FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { searchProducts } from "../api/productService";
+import {
+  searchProducts,
+  getProductCountsByCategory,
+} from "../api/productService";
 import img from "../assets/img/nexufy-horizontal-png.png";
 import { ThemeContext } from "../components/themes/ThemeContext";
 import ThemeToggle from "../components/themes/ThemeToggle";
-import { LanguageContext } from "../components/themes/LanguageContext"; // Importar LanguageContext
-import LanguageToggle from "../components/themes/LanguageToggle"; // Importar LanguageToggle
-import translations from "../components/themes/translations"; // Importar las traducciones
+import LanguageToggle from "../components/themes/LanguageToggle";
+import useLanguage from "../components/themes/useLanguage";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
-import { getProductCountsByCategory } from "../api/productService";
+import { categoryNameToIdMapping } from "../components/themes/translations"; // Importa el mapeo inverso
 
 function NavbarHome() {
   const [showCategories, setShowCategories] = useState(false);
@@ -32,8 +34,7 @@ function NavbarHome() {
 
   const { user, handleLogout } = useContext(AuthenticationContext);
   const { darkMode } = useContext(ThemeContext);
-  const { language } = useContext(LanguageContext); // Acceder al idioma actual
-  const t = translations[language]; // Obtener las traducciones para el idioma actual
+  const { t, language } = useLanguage();
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -64,14 +65,29 @@ function NavbarHome() {
 
   const handleCategoryClick = (category) => {
     setShowCategories(false);
-    navigate("/all", { state: { category: category.name } });
+    navigate("/all", { state: { categoryId: category.id } }); // Pasar el ID de la categoría
   };
 
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const counts = await getProductCountsByCategory();
-        setProductCounts(counts);
+        const counts = await getProductCountsByCategory(); // Esto debe devolver un objeto con los nombres de las categorías como claves
+
+        // Crear un objeto para mapear IDs de categoría a conteos
+        const categoryCounts = {};
+
+        Object.entries(counts).forEach(([categoryName, count]) => {
+          const categoryId = categoryNameToIdMapping[categoryName];
+          if (categoryId) {
+            if (categoryCounts[categoryId]) {
+              categoryCounts[categoryId] += count;
+            } else {
+              categoryCounts[categoryId] = count;
+            }
+          }
+        });
+
+        setProductCounts(categoryCounts);
       } catch (error) {
         console.error("Error al obtener el conteo de productos:", error);
       }
@@ -106,7 +122,7 @@ function NavbarHome() {
       <div className="container d-flex justify-content-between align-items-center">
         <Navbar.Brand>
           <Link to="/" style={{ color: "var(--color-text-primary)" }}>
-            <img src={img} alt="Nexufy Logo" style={{ width: "7rem" }} />
+            <img src={img} alt={t.logoAlt} style={{ width: "7rem" }} />
           </Link>
         </Navbar.Brand>
 
@@ -200,17 +216,20 @@ function NavbarHome() {
                   darkMode ? "bg-dark text-light" : "bg-light text-dark"
                 }`}
               >
-                {t.categoriess.map((category, index) => (
-                  <a
-                    key={index}
-                    onClick={() => handleCategoryClick(category)}
-                    className={`dropdown-itemCategory ${
-                      darkMode ? "bg-dark text-light" : "bg-light text-dark"
-                    }`}
-                  >
-                    {category.name} ({productCounts[category.name] || 0})
-                  </a>
-                ))}
+                {t.categoriess.map((category) => {
+                  const count = productCounts[category.id] || 0;
+                  return (
+                    <a
+                      key={category.id}
+                      onClick={() => handleCategoryClick(category)}
+                      className={`dropdown-itemCategory ${
+                        darkMode ? "bg-dark text-light" : "bg-light text-dark"
+                      }`}
+                    >
+                      {category.name} ({count})
+                    </a>
+                  );
+                })}
               </div>
             )}
           </Nav.Link>

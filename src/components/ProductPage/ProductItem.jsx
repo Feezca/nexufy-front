@@ -1,9 +1,7 @@
-// ProductItem.js
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // Importa useParams
+import { useParams } from "react-router-dom";
 import { ThemeContext } from "../themes/ThemeContext";
-import { LanguageContext } from "../themes/LanguageContext"; // Importar el LanguageContext
-import translations from "../themes/translations"; // Importar las traducciones
+import useLanguage from "../themes/useLanguage"; // Importar el hook useLanguage
 import ProductCard from "./components/ProductCard";
 import ProductComments from "./components/ProductComments";
 import ProductData from "./components/ProductData";
@@ -13,19 +11,17 @@ import { getProduct } from "../../api/productService";
 const ProductItem = () => {
   const [producto, setProducto] = useState(null);
   const { darkMode } = useContext(ThemeContext);
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
-  const t = translations[language]; // Obtener las traducciones correspondientes
-  const { id } = useParams(); // Usa useParams para obtener el ID del producto
+  const { t } = useLanguage(); // Usar el hook useLanguage para obtener las traducciones
+  const { id } = useParams();
 
-  // Verifica si el ID del producto existe
   if (!id) {
-    return <div>{t.productNotFound}</div>; // Mensaje para el caso sin producto
+    return <div>{t.productNotFound}</div>;
   }
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const data = await getProduct(id); // Usa el ID directamente
+        const data = await getProduct(id);
         setProducto(data);
       } catch (error) {
         console.error(error);
@@ -34,9 +30,8 @@ const ProductItem = () => {
     fetchProduct();
   }, [id]);
 
-  // Verifica si el producto se ha cargado
   if (!producto) {
-    return <div>{t.loadingProduct}</div>; // Mensaje de carga
+    return <div>{t.loadingProduct}</div>;
   }
 
   const { image, name, description, price, category, customerId } = producto;
@@ -44,7 +39,7 @@ const ProductItem = () => {
   return (
     <>
       <ProductCard
-        id={id} // Puedes seguir usando el ID aquí
+        id={id}
         image={image}
         name={name}
         price={price}
@@ -60,9 +55,10 @@ const ProductItem = () => {
         }`}
       />
 
-      <ProductSeller customerId={customerId} />
+      
+      {/* <ProductSeller customerId={customerId} /> */}
 
-      <h3
+      {/* <h3
         className={`container fs-3 fw-medium my-4 ${
           darkMode ? "text-white" : "text-dark"
         }`}
@@ -70,7 +66,7 @@ const ProductItem = () => {
         {t.productComments}
       </h3>
 
-      <ProductComments productId={id} />
+      <ProductComments productId={id} /> */}
     </>
   );
 };

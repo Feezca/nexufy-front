@@ -1,3 +1,5 @@
+// CategoryCard.jsx
+
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react"; // Importar useContext
 import { ThemeContext } from "../themes/ThemeContext"; // Importar ThemeContext
@@ -9,7 +11,6 @@ const CategoryCard = ({ id, image, name, description }) => {
   const handleCategoryClick = (name) => {
     navigate("/all", { state: { category: name } });
   };
-  
 
   return (
     <div
@@ -23,20 +24,11 @@ const CategoryCard = ({ id, image, name, description }) => {
         className="card-image object-fit-cover rounded-5"
       />
       <div
-        className={`overlay text-card-custom d-flex flex-column justify-content-center align-items-start ${
-          darkMode ? " text-light" : " text-dark"
-        }`} // Cambiar el color según el tema
+        className={`overlay text-card-custom d-flex flex-column justify-content-center align-items-start`}
       >
-        <p
-          className={`fs-3 fw-semibold ${
-            darkMode ?"text-dark" : "text-light" 
-          }`}
-        >
-          {name}
-        </p>
-        <p className={`fs-6 ${darkMode ? "text-dark" : "text-light"}`}>
-          {description}
-        </p>
+        {/* Nombre y descripción siempre en blanco */}
+        <p className="fs-3 fw-semibold text-white">{name}</p>
+        <p className="fs-6 text-white">{description}</p>
       </div>
     </div>
   );

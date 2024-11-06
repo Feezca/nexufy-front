@@ -11,10 +11,9 @@ import ThemeToggle from "../themes/ThemeToggle";
 import { ThemeContext } from "../themes/ThemeContext";
 import Swal from "sweetalert2";
 
-// Importar el contexto de idioma y las traducciones
-import { LanguageContext } from "../themes/LanguageContext";
+// Importar useLanguage y LanguageToggle
+import useLanguage from "../themes/useLanguage";
 import LanguageToggle from "../themes/LanguageToggle";
-import translations from "../themes/translations";
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,9 +21,8 @@ const Login = () => {
   const navigate = useNavigate();
   const { handleLogin } = useContext(AuthenticationContext);
 
-  // Obtener el idioma actual y las traducciones
-  const { language } = useContext(LanguageContext);
-  const t = translations[language];
+  // Usar el hook useLanguage para obtener las traducciones
+  const { t, language } = useLanguage();
 
   const loginFields = [
     {
@@ -114,7 +112,6 @@ const Login = () => {
           <img src={img} alt="Nexufy Logo" style={{ height: "80px" }} />
         </Navbar.Brand>
 
-        {/* Botones de cambio de idioma y tema */}
         <div className="ms-auto d-flex align-items-center">
           <LanguageToggle />
           <ThemeToggle />

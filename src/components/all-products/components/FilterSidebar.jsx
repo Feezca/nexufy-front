@@ -1,14 +1,11 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
 import { ThemeContext } from "../../themes/ThemeContext";
-import { LanguageContext } from "../../themes/LanguageContext"; // Importar LanguageContext
-import translations from "../../themes/translations"; // Importar las traducciones
-import categories from "../../../data/category.json";
+import useLanguage from "../../themes/useLanguage";
 
 const FilterSidebar = ({ setFilters }) => {
   const { darkMode } = useContext(ThemeContext);
-  const { language } = useContext(LanguageContext); // Obtener el idioma actual
-  const t = translations[language]; // Obtener las traducciones para el idioma actual
+  const { t } = useLanguage();
 
   const handleFilterChange = (type, value) => {
     setFilters((prev) => ({ ...prev, [type]: value }));
@@ -17,14 +14,21 @@ const FilterSidebar = ({ setFilters }) => {
   const navs = [
     {
       id: 1,
-      name: t.filterByPrice, // Texto traducido
-      options: [t.priceUnder10000, t.priceOver10000, t.priceOver25000],
+      name: t.filterByPrice,
+      options: [
+        { id: "under10000", name: t.priceUnder10000 },
+        { id: "over10000", name: t.priceOver10000 },
+        { id: "over25000", name: t.priceOver25000 },
+      ],
       type: "price",
     },
     {
       id: 2,
       name: t.filterByCategory,
-      options: t.categoriess.map((category) => category.name),
+      options: t.categoriess.map((category) => ({
+        id: category.id,
+        name: category.name,
+      })),
       type: "category",
     },
   ];
@@ -52,14 +56,14 @@ const FilterSidebar = ({ setFilters }) => {
             >
               {nav.name}
             </h3>
-            {nav.options.map((opt, index) => (
+            {nav.options.map((opt) => (
               <p
-                key={index}
+                key={opt.id}
                 className="options"
                 onClick={() => handleFilterChange(nav.type, opt)}
                 style={{ cursor: "pointer" }}
               >
-                {opt}
+                {opt.name}
               </p>
             ))}
           </Row>

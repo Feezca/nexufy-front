@@ -6,14 +6,13 @@ import { useState, useContext, useEffect } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import ThemeToggle from "../themes/ThemeToggle";
 import { ThemeContext } from "../themes/ThemeContext";
-import { LanguageContext } from "../themes/LanguageContext";
 import LanguageToggle from "../themes/LanguageToggle";
-import translations from "../themes/translations";
+import useLanguage from "../themes/useLanguage"; // Importar el hook personalizado
 
 const Register = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // Estado para el mensaje de éxito
+  const [successMessage, setSuccessMessage] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -29,8 +28,7 @@ const Register = () => {
   });
 
   const { darkMode } = useContext(ThemeContext);
-  const { language } = useContext(LanguageContext);
-  const t = translations[language];
+  const { t } = useLanguage(); // Usar el hook personalizado para acceder a las traducciones
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -38,7 +36,6 @@ const Register = () => {
       ...prevData,
       [id]: value,
     }));
-    // Limpiar el mensaje de error al escribir en el campo
     setFieldErrors((prevErrors) => ({
       ...prevErrors,
       [id]: "",
@@ -46,7 +43,6 @@ const Register = () => {
   };
 
   useEffect(() => {
-    // Validación de la longitud de la contraseña
     if (formData.password && formData.password.length < 6) {
       setFieldErrors((prevErrors) => ({
         ...prevErrors,
@@ -59,7 +55,6 @@ const Register = () => {
       }));
     }
 
-    // Validación de coincidencia de contraseñas
     if (
       formData.confirmPassword &&
       formData.password !== formData.confirmPassword
@@ -86,19 +81,19 @@ const Register = () => {
     };
 
     if (!formData.username) {
-      newFieldErrors.username = "Te faltó completar el usuario";
+      newFieldErrors.username = t.usernameRequiredError;
       hasErrors = true;
     }
     if (!formData.email) {
-      newFieldErrors.email = "Te faltó completar el email";
+      newFieldErrors.email = t.emailRequiredError;
       hasErrors = true;
     }
     if (!formData.password) {
-      newFieldErrors.password = "Te faltó completar la contraseña";
+      newFieldErrors.password = t.passwordRequiredError;
       hasErrors = true;
     }
     if (!formData.confirmPassword) {
-      newFieldErrors.confirmPassword = "Te faltó confirmar la contraseña";
+      newFieldErrors.confirmPassword = t.confirmPasswordRequiredError;
       hasErrors = true;
     }
 
@@ -119,9 +114,7 @@ const Register = () => {
     try {
       await registerService(formData);
       setIsRegistered(true);
-      setSuccessMessage(
-        "¡Registro exitoso! Serás redirigido al inicio de sesión."
-      );
+      setSuccessMessage(t.registrationSuccess);
       setErrorMessage("");
       setTimeout(() => {
         navigate("/login");
