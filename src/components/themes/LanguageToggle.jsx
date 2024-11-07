@@ -2,10 +2,10 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import spanish from "../../assets/img/spanish.svg";
 import english from "../../assets/img/english.svg";
-import useLanguage from "./useLanguage"; // Usar el hook personalizado
+import useLanguage from "./useLanguage";
 
 const LanguageToggle = () => {
-  const { language, toggleLanguage } = useLanguage(); // Usar el hook
+  const { language, toggleLanguage } = useLanguage();
 
   return (
     <button

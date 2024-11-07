@@ -3,13 +3,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import headerImage from "../../assets/img/home-removebg-preview.png";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 import { ThemeContext } from "../themes/ThemeContext";
-import useLanguage from "../themes/useLanguage"; // Importar el hook personalizado para el idioma
+import useLanguage from "../themes/useLanguage";
 import { useContext } from "react";
 
 const Header = () => {
   const { user } = useContext(AuthenticationContext);
   const { darkMode } = useContext(ThemeContext);
-  const { t } = useLanguage(); // Usar el hook para obtener las traducciones
+  const { t } = useLanguage();
 
   const navigate = useNavigate();
 

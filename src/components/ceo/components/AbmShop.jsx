@@ -6,7 +6,7 @@ import { ThemeContext } from "../../themes/ThemeContext";
 import useLanguage from "../../themes/useLanguage";
 import CustomTable from "./CustomTable";
 import SearchBar from "./SearchBar";
-import { FaEdit, FaTrash, FaEllipsisV } from "react-icons/fa"; 
+import { FaEdit, FaTrash, FaEllipsisV } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useSearch from "../../../hooks/useSearch";
 
@@ -24,7 +24,7 @@ const AbmShop = () => {
     null,
     "products"
   );
-  const [activeDropdown, setActiveDropdown] = useState(null); // Estado para controlar el menú activo
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
   if (!user) {
     return <Navigate to="/login" />;
@@ -81,10 +81,9 @@ const AbmShop = () => {
   };
 
   const toggleDropdown = (id) => {
-    console.log("Toggling dropdown for id:", id); // Verifica el id
+    console.log("Toggling dropdown for id:", id);
     setActiveDropdown((prev) => (prev === id ? null : id));
   };
-  
 
   const productColumns = [
     {
@@ -106,20 +105,25 @@ const AbmShop = () => {
       header: "",
       accessor: "actions",
       render: (item) => (
-        <div className="btn-options" style={{ position: "relative", display: "inline-block" }}>
-          <i 
-          className="bi bi-three-dots"
+        <div
+          className="btn-options"
+          style={{ position: "relative", display: "inline-block" }}
+        >
+          <i
+            className="bi bi-three-dots"
             onClick={() => toggleDropdown(item.id)}
           />
           {activeDropdown === item.id && (
             <div
-              className={`dropdown-menu ${darkMode ? "bg-dark text-light" : "bg-light"}`}
+              className={`dropdown-menu ${
+                darkMode ? "bg-dark text-light" : "bg-light"
+              }`}
               style={{
                 position: "absolute",
                 top: "100%",
                 left: "0",
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                
+
                 borderRadius: "4px",
               }}
             >
@@ -127,13 +131,21 @@ const AbmShop = () => {
                 className="dropdown-item"
                 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
                 onClick={() => handleEdit(item.id)}
-              >{t.edit}
+              >
+                {t.edit}
               </button>
               <button
                 className="dropdown-item"
-                style={{ display: "flex", alignItems: "center", color:"red", gap: "0.5rem", }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  color: "red",
+                  gap: "0.5rem",
+                }}
                 onClick={() => confirmDeleteProduct(item.id)}
-              > {t.delete}
+              >
+                {" "}
+                {t.delete}
               </button>
             </div>
           )}
@@ -141,11 +153,12 @@ const AbmShop = () => {
       ),
     },
   ];
-  if (isLoading) return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <Spinner animation="grow" />
-    </div>
-  );
+  if (isLoading)
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <Spinner animation="grow" />
+      </div>
+    );
   return (
     <div
       className={`container shadow p-4 mb-3 mx-2 ${

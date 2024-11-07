@@ -563,7 +563,7 @@ const translations = {
     downloadProductReport: "Download product report",
     promoteSuccessMessage: "You have been promoted successfully.",
     needToBeAdminToPublishMessage:
-      "You need to be an admin to publish products.", // Traducción en inglés
+      "You need to be an admin to publish products.",
     errorPromotingUser: "Error promoting user.",
     verMas: "see more",
     loadingAllProduct: "Loading all products..",

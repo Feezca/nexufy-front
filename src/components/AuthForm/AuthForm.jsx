@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../themes/ThemeContext";
-import useLanguage from "../themes/useLanguage"; // Importar el hook useLanguage
+import useLanguage from "../themes/useLanguage";
 
 const AuthForm = ({
   title,
@@ -14,12 +14,10 @@ const AuthForm = ({
   errorMessage,
 }) => {
   const { darkMode } = useContext(ThemeContext);
-  const { t, language } = useLanguage(); // Obtener las traducciones correspondientes usando el hook
+  const { t, language } = useLanguage();
 
-  // Estado para errores en los campos
   const [errors, setErrors] = useState({});
 
-  // Validar cada campo en tiempo real
   const validateInput = (name, value) => {
     let error = "";
 
@@ -54,7 +52,6 @@ const AuthForm = ({
       data[key] = value;
     });
 
-    // Validar que no haya errores antes de enviar
     const hasErrors = Object.values(errors).some((error) => error);
     if (!hasErrors) {
       onSubmit(data);

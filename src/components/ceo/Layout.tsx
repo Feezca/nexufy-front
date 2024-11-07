@@ -3,14 +3,14 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 import { ThemeContext } from "../themes/ThemeContext";
 import Sidebar from "./components/Sidebar";
-import ThemeToggle from "../themes/ThemeToggle"; // Importar el componente de cambio de tema
-import LanguageToggle from "../themes/LanguageToggle"; // Importar el componente de cambio de idioma
-import useLanguage from "../themes/useLanguage"; // Importar el hook de idioma
+import ThemeToggle from "../themes/ThemeToggle";
+import LanguageToggle from "../themes/LanguageToggle";
+import useLanguage from "../themes/useLanguage";
 
 const CeoLayout = () => {
   const navigate = useNavigate();
   const { darkMode } = useContext(ThemeContext);
-  const { t, language } = useLanguage(); // Usar el hook para obtener las traducciones
+  const { t, language } = useLanguage();
   const { user } = useContext(AuthenticationContext);
 
   const closeSession = () => {
@@ -41,10 +41,9 @@ const CeoLayout = () => {
                 {t.dashboard}
               </h1>
 
-              {/* Añadir botones de cambio de idioma y tema aquí */}
               <div className="d-flex align-items-center">
-                <LanguageToggle /> {/* Botón de cambio de idioma */}
-                <ThemeToggle /> {/* Botón de cambio de tema */}
+                <LanguageToggle />
+                <ThemeToggle />
                 <div
                   className={`rounded-pill shadow py-2 me-4 d-flex align-items-center justify-content-around ${
                     darkMode ? "bg-dark-subtle" : "bg-light-subtle"
@@ -62,7 +61,7 @@ const CeoLayout = () => {
                           }`
                     }
                     style={{ width: "2.5rem" }}
-                    alt={t.profilePhoto} // Alt para "Foto de perfil"
+                    alt={t.profilePhoto}
                   />
                   <button
                     className={`rounded-circle ${

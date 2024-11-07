@@ -3,7 +3,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProduct, updateProduct } from "../../../api/productService";
 import { AuthenticationContext } from "../../../services/authenticationContext/authentication.context";
-import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
+import useLanguage from "../../themes/useLanguage";
 import { ThemeContext } from "../../themes/ThemeContext";
 import editproduct from "../../../assets/img/editproduct.png";
 
@@ -11,7 +11,7 @@ const EditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthenticationContext);
-  const { t, language } = useLanguage(); // Obtener las traducciones directamente con el hook
+  const { t, language } = useLanguage();
 
   const { darkMode } = useContext(ThemeContext);
 
