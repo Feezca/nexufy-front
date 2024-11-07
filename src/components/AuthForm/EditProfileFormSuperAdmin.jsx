@@ -11,14 +11,14 @@ import moment from "moment";
 import useLanguage from "../themes/useLanguage"; // Importar el hook useLanguage
 
 const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
-  const { t, language } = useLanguage(); // Desestructurar t y language desde useLanguage
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState(initialData);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [suspensionEndDate, setSuspensionEndDate] = useState(
     formData.suspendedUntil ? new Date(formData.suspendedUntil) : null
   );
-
+  console.log(formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -28,7 +28,7 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
     e.preventDefault();
     setErrorMessage(null);
     try {
-      const token = localStorage.getItem("token"); // Asumiendo que el token está almacenado en localStorage
+      const token = localStorage.getItem("token");
       await updateCustomerProfile(formData.id, token, formData);
       setSuccessMessage(t.changesSavedSuccessfully);
       onSave(formData);

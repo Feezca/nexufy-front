@@ -27,7 +27,7 @@ const AdminLayout = () => {
           style={{ marginLeft: "17rem", marginTop: "7rem" }}
         >
           <Outlet context={{ user }} />{" "}
-          {/* Asegúrate de pasar el contexto aquí */}
+          
         </main>
       </div>
     </div>
