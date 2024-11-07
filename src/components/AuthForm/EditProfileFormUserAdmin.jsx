@@ -131,13 +131,13 @@ const EditProfileFormUserAdmin = ({ initialData, onSave, onCancel }) => {
       {successMessage && <p className="text-success mt-3">{successMessage}</p>}
       {promoteMessage && <p className="text-success mt-3">{promoteMessage}</p>}
 
-      <Row className="mt-3">
-        <Col>
-          <Button variant="primary" type="submit" className="me-2">
-            {t.saveChangesButton}
-          </Button>
-          <Button variant="secondary" onClick={onCancel}>
+      <Row className="mt-3  w-100 ">
+        <Col className="d-flex justify-content-end">
+          <Button variant="link" className="text-primary me-2 fw-semibold opacity-75" onClick={onCancel}>
             {t.confirmDeleteCancelButton}
+          </Button>
+          <Button variant="primary" type="submit" className="">
+            {t.saveChangesButton}
           </Button>
         </Col>
       </Row>

@@ -1,7 +1,7 @@
 // AbmUsers.jsx
 
 import { useContext, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { deleteCustomer, registerAdminUser } from "../../../api/adminService";
 import {
@@ -160,9 +160,11 @@ const AbmUsers = () => {
     }
   }, [user, navigate]);
 
-  if (isLoading) {
-    return <p>{t.loading}</p>;
-  }
+  if (isLoading) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Spinner animation="grow" />
+    </div>
+  );
 
   if (error) {
     return <p className="text-danger">{error.message}</p>;

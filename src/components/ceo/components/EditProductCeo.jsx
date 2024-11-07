@@ -73,7 +73,7 @@ const EditProduct = () => {
       style={{ borderRadius: "20px" }}
     >
       <div className="w-50">
-        <h2>{t.editProduct}</h2>
+        <h2 className="fs-4">{t.editProduct}</h2>
         {errorMessage && <p className="text-danger">{errorMessage}</p>}
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formName">

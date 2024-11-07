@@ -15,6 +15,7 @@ import { ThemeContext } from "../../themes/ThemeContext";
 // Importar herramientas para tooltips
 import { useTooltip, TooltipWithBounds, defaultStyles } from "@visx/tooltip";
 import { localPoint } from "@visx/event";
+import { Spinner } from "react-bootstrap";
 
 const Statistics = () => {
   const { darkMode } = useContext(ThemeContext);
@@ -184,7 +185,12 @@ const Statistics = () => {
     [maxProducts, yMax]
   );
 
-  if (loading) return <p>{t.loadingStatistics}</p>;
+  if (loading) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Spinner animation="grow" />
+    </div>
+  );
+
   if (error)
     return (
       <div
@@ -245,7 +251,7 @@ const Statistics = () => {
           style={{ position: "relative" }}
         >
           <h3
-            className={`fs-4 mb-3 ${
+            className={`fs-5 mb-3 ${
               darkMode ? "text-white" : "text-body-tertiary"
             }`}
           >
@@ -354,7 +360,7 @@ const Statistics = () => {
           style={{ position: "relative" }}
         >
           <h3
-            className={`fs-4 mb-3 ${
+            className={`fs-5 mb-3 ${
               darkMode ? "text-white" : "text-body-tertiary"
             }`}
           >

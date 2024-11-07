@@ -4,7 +4,7 @@ import {
   getCustomerById,
   updateCustomerProfile,
 } from "../../../api/customerService";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { Navigate, useOutletContext } from "react-router-dom";
 import EditProfileFormUserAdmin from "../../AuthForm/EditProfileFormUserAdmin";
 import EditProfileFormSuperAdmin from "../../AuthForm/EditProfileFormSuperAdmin";
@@ -79,9 +79,11 @@ const Profile = () => {
     return <Navigate to="/login" />;
   }
 
-  if (isLoading) {
-    return <p>{t.loading}</p>;
-  }
+  if (isLoading) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Spinner animation="grow" />
+    </div>
+  );
 
   if (error) {
     return (

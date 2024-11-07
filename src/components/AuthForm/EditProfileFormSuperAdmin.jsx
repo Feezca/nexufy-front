@@ -83,6 +83,8 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
   const isOwnProfile = false; // Asumiendo que en SuperAdmin nunca es propio perfil
 
   return (
+    <>
+    <h2 className="fs-4">{t.editUser}</h2>
     <Form onSubmit={handleSubmit}>
       <Row>
         <Col md={6}>
@@ -266,6 +268,7 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
         </Col>
       </Row>
     </Form>
+</>
   );
 };
 

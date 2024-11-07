@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Pagination } from "react-bootstrap";
+import { Button, Pagination, Spinner } from "react-bootstrap";
 import { Navigate, useOutletContext, useNavigate } from "react-router-dom";
 import { getAllProducts, deleteProduct } from "../../../api/productService";
 import { ThemeContext } from "../../themes/ThemeContext";
@@ -141,7 +141,11 @@ const AbmShop = () => {
       ),
     },
   ];
-
+  if (isLoading) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Spinner animation="grow" />
+    </div>
+  );
   return (
     <div
       className={`container shadow p-4 mb-3 mx-2 ${

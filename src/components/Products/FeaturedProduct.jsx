@@ -4,6 +4,7 @@ import { ThemeContext } from "../themes/ThemeContext";
 import { Link } from "react-router-dom";
 import useLanguage from "../themes/useLanguage"; // Importar el hook personalizado
 import { getAllProducts } from "../../api/productService";
+import { Spinner } from "react-bootstrap";
 
 const FeaturedProduct = () => {
   const { darkMode } = useContext(ThemeContext);
@@ -27,13 +28,11 @@ const FeaturedProduct = () => {
     fetchProducts();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="w-100 d-flex justify-content-center fs-4 fw-bold">
-        {t.loadingFeaturedProducts}
-      </div>
-    );
-  }
+  if (loading) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Spinner animation="grow" />
+    </div>
+  );
 
   if (products.length === 0) {
     return (
