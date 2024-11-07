@@ -1,5 +1,3 @@
-// Publications.jsx
-
 import { useEffect, useState, useContext } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 import ProductList from "../../Products/ProductList";
@@ -8,13 +6,13 @@ import { Button, Alert, Spinner } from "react-bootstrap";
 import CreateProductForm from "./CreateProductForm";
 import { postProduct } from "../../../api/productService";
 import { ThemeContext } from "../../themes/ThemeContext";
-import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
+import useLanguage from "../../themes/useLanguage";
 
 const Publications = () => {
   const { user } = useOutletContext();
   const navigate = useNavigate();
   const { darkMode } = useContext(ThemeContext);
-  const { t } = useLanguage(); // Usar el hook useLanguage para obtener las traducciones
+  const { t } = useLanguage();
 
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
@@ -70,11 +68,12 @@ const Publications = () => {
     ["ROLE_ADMIN", "ROLE_SUPERADMIN"].includes(role.toUpperCase())
   );
 
-  if (isLoading) return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <Spinner animation="grow" />
-    </div>
-  );
+  if (isLoading)
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <Spinner animation="grow" />
+      </div>
+    );
 
   if (error) {
     return <p className="text-danger">{error}</p>;

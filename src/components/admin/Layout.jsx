@@ -4,11 +4,11 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import { ThemeContext } from "../themes/ThemeContext"; // Importar el ThemeContext
+import { ThemeContext } from "../themes/ThemeContext";
 
 const AdminLayout = () => {
   const { user } = useContext(AuthenticationContext);
-  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
+  const { darkMode } = useContext(ThemeContext);
   return (
     <div
       className={`d-flex flex-column h-100 ${
@@ -27,7 +27,6 @@ const AdminLayout = () => {
           style={{ marginLeft: "17rem", marginTop: "7rem" }}
         >
           <Outlet context={{ user }} />{" "}
-          
         </main>
       </div>
     </div>

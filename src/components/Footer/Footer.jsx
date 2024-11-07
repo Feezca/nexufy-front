@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useContext } from "react";
-import { ThemeContext } from "../themes/ThemeContext"; // Importar el ThemeContext
-import useLanguage from "../themes/useLanguage"; // Importar el hook personalizado de idioma
+import { ThemeContext } from "../themes/ThemeContext";
+import useLanguage from "../themes/useLanguage";
 
 function Footer() {
-  const { darkMode } = useContext(ThemeContext); // Acceder al estado del tema
-  const { t } = useLanguage(); // Usar el hook para obtener las traducciones
+  const { darkMode } = useContext(ThemeContext);
+  const { t } = useLanguage();
 
   return (
     <footer

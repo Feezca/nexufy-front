@@ -7,7 +7,7 @@ import useLanguage from "../themes/useLanguage"; // Importar el hook useLanguage
 const CreateUserForm = ({ onSave, onCancel }) => {
   // Añadido onCancel
   const [formData, setFormData] = useState({});
-  const { t, language } = useLanguage(); // Obtener las traducciones correspondientes usando el hook
+  const { t, language } = useLanguage();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,11 +61,7 @@ const CreateUserForm = ({ onSave, onCancel }) => {
         </Col>
       </Row>
       <div className="mt-3 d-flex justify-content-end">
-        <Button
-          variant="secondary"
-          onClick={handleCancel} // Llamada a handleCancel
-          className="me-2"
-        >
+        <Button variant="secondary" onClick={handleCancel} className="me-2">
           {t.cancelButton}{" "}
         </Button>
         <Button variant="primary" type="submit">
@@ -78,7 +74,7 @@ const CreateUserForm = ({ onSave, onCancel }) => {
 
 CreateUserForm.propTypes = {
   onSave: PropTypes.func.isRequired,
-  onCancel: PropTypes.func, // Añadido onCancel
+  onCancel: PropTypes.func,
 };
 
 export default CreateUserForm;

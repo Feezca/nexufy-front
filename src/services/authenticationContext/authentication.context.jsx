@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { fetchUserData } from "../../api/customerService"; // Asegúrate de tener esta función
+import { fetchUserData } from "../../api/customerService";
 
 export const AuthenticationContext = createContext();
 const userValue = JSON.parse(localStorage.getItem("user"));
@@ -34,8 +34,8 @@ export const AuthenticationContextProvider = ({ children }) => {
         user.id,
         localStorage.getItem("token")
       );
-      localStorage.setItem("user", JSON.stringify(updatedUser)); 
-      setUser(updatedUser); 
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
     } catch (error) {
       console.error("Error al recargar los datos del usuario:", error);
     }

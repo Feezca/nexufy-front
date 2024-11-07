@@ -10,7 +10,7 @@ import {
 } from "../../../api/customerService";
 import CreateUserForm from "../../AuthForm/CreateUserForm";
 import { ThemeContext } from "../../themes/ThemeContext";
-import useLanguage from "../../themes/useLanguage"; // Importa el hook useLanguage
+import useLanguage from "../../themes/useLanguage";
 import CustomTable from "./CustomTable";
 import SearchBar from "./SearchBar";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -23,7 +23,7 @@ import useSearch from "../../../hooks/useSearch";
 const AbmUsers = () => {
   const { user } = useContext(AuthenticationContext);
   const { darkMode } = useContext(ThemeContext);
-  const { t } = useLanguage(); // Obtener las traducciones directamente con el hook
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
@@ -40,9 +40,8 @@ const AbmUsers = () => {
     token,
     "customers"
   );
-  const [activeDropdown, setActiveDropdown] = useState(null); // Estado para controlar el menú activo
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
-  // Determinar si el usuario actual es Super Admin
   const isSuperAdmin = user?.roles.includes("ROLE_SUPERADMIN");
 
   const handleCreateClick = () => {
@@ -85,10 +84,8 @@ const AbmUsers = () => {
   };
 
   const handleEdit = (selectedUser) => {
-    // Verificar si el usuario actual está intentando editar su propio perfil
     const isEditingOwnProfile = selectedUser.id === user.id;
 
-    // Si el usuario no es Super Admin y está intentando editar a otro usuario, mostrar error
     if (!isSuperAdmin && !isEditingOwnProfile) {
       Swal.fire({
         icon: "error",
@@ -145,7 +142,7 @@ const AbmUsers = () => {
   const handleConfirmDelete = async (id) => {
     try {
       await deleteCustomer(id, token);
-      // Actualizamos el estado 'users' eliminando el usuario eliminado
+
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
       Swal.fire(t.deleted, t.successMessage, "success");
     } catch (error) {
@@ -160,11 +157,12 @@ const AbmUsers = () => {
     }
   }, [user, navigate]);
 
-  if (isLoading) return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <Spinner animation="grow" />
-    </div>
-  );
+  if (isLoading)
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <Spinner animation="grow" />
+      </div>
+    );
 
   if (error) {
     return <p className="text-danger">{error.message}</p>;
@@ -183,16 +181,13 @@ const AbmUsers = () => {
       style={{ borderRadius: "20px" }}
     >
       {isEditing ? (
-        // Determinar qué formulario mostrar
         isSuperAdmin && selectedUser.id !== user.id ? (
-          // Si es superadministrador y está editando el perfil de otro usuario, mostrar EditProfileFormSuperAdmin
           <EditProfileFormSuperAdmin
             initialData={selectedUser}
             onSave={handleSaveEdit}
             onCancel={handleCancelEdit}
           />
         ) : (
-          // De lo contrario, mostrar EditProfileFormUserAdmin
           <EditProfileFormUserAdmin
             initialData={selectedUser}
             onSave={handleSaveEdit}
