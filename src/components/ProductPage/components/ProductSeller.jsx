@@ -59,9 +59,6 @@ const ProductSeller = ({ customerId }) => {
                   }`}
                 >
                   {seller?.name} {seller?.lastname}
-                  <i className="bi bi-star-fill text-primary-custom me-1"></i>
-                  <i className="bi bi-star-fill text-primary-custom me-1"></i>
-                  <i className="bi bi-star-fill text-primary-custom"></i>
                 </p>
 
                 <p

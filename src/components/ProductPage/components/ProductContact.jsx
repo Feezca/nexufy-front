@@ -31,15 +31,34 @@ const ProductContact = ({ customerId }) => {
       <Col>
         <Row>
           <p
-            className={`fw-medium fs-5 ${
+            className={`fw-medium text-body-tertiary fs-5 ${
               darkMode ? "text-light" : "text-dark"
             }`}
           >
             {t.contactSeller}
           </p>
         </Row>
+        <Row>
+          <p
+            className={`fw-medium fs-3 ${
+              darkMode ? "text-light" : "text-dark"
+            }`}
+          >
+            {sellerInfo.name} {sellerInfo.lastname}
+          </p>
+        </Row>
+
         {user ? (
           <div>
+            <Row>
+              <p
+                className={`mt-2 ${darkMode ? "text-light" : "text-secondary"}`}
+              >
+                <i className="bi bi-geo-alt pe-2"></i>
+                {t.locationPrefix}
+                {sellerInfo?.address}
+              </p>
+            </Row>
             <Row>
               <Col>
                 <a
@@ -80,31 +99,12 @@ const ProductContact = ({ customerId }) => {
                 </a>
               </Col>
             </Row>
-            <Row>
-              <p
-                className={`mt-2 ${darkMode ? "text-light" : "text-secondary"}`}
-              >
-                <i className="bi bi-geo-alt pe-2"></i>
-                {t.locationPrefix}
-                {sellerInfo?.address}
-              </p>
-            </Row>
           </div>
         ) : (
           <p className={darkMode ? "text-light" : "text-dark"}>
             {t.mustLoginToContactSeller} <a href="/login">{t.login}</a>.
           </p>
         )}
-        <div className="d-flex align-items-center">
-          <i className="bi bi-star-fill text-primary-custom"></i>
-          <span
-            className={`fs-sm ms-2 ${
-              darkMode ? "text-light" : "text-secondary"
-            }`}
-          >
-            {t.visitsCount.replace("{count}", "15")}
-          </span>
-        </div>
       </Col>
     </div>
   );

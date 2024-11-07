@@ -1,19 +1,19 @@
 import { useContext, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Pagination, Spinner } from "react-bootstrap";
 import { Navigate, useOutletContext, useNavigate } from "react-router-dom";
 import { getAllProducts, deleteProduct } from "../../../api/productService";
 import { ThemeContext } from "../../themes/ThemeContext";
-import useLanguage from "../../themes/useLanguage"; // Utilizar el hook useLanguage
+import useLanguage from "../../themes/useLanguage";
 import CustomTable from "./CustomTable";
 import SearchBar from "./SearchBar";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaEllipsisV } from "react-icons/fa"; 
 import Swal from "sweetalert2";
 import useSearch from "../../../hooks/useSearch";
 
 const AbmShop = () => {
   const { user } = useOutletContext();
   const { darkMode } = useContext(ThemeContext);
-  const { t, language } = useLanguage(); // Obtener las traducciones usando el hook
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
 
   const [productos, setProductos] = useState([]);
@@ -24,6 +24,7 @@ const AbmShop = () => {
     null,
     "products"
   );
+  const [activeDropdown, setActiveDropdown] = useState(null); // Estado para controlar el menú activo
 
   if (!user) {
     return <Navigate to="/login" />;
@@ -79,6 +80,12 @@ const AbmShop = () => {
     }
   };
 
+  const toggleDropdown = (id) => {
+    console.log("Toggling dropdown for id:", id); // Verifica el id
+    setActiveDropdown((prev) => (prev === id ? null : id));
+  };
+  
+
   const productColumns = [
     {
       header: t.productName,
@@ -96,29 +103,49 @@ const AbmShop = () => {
       render: (item) => item.category,
     },
     {
-      header: t.actions,
+      header: "",
       accessor: "actions",
       render: (item) => (
-        <div style={{ display: "flex", gap: "0.5rem" }}>
-          <Button
-            style={{ height: "22px", width: "22px", padding: "0" }}
-            variant="link"
-            onClick={() => handleEdit(item.id)}
-          >
-            <FaEdit />
-          </Button>
-          <Button
-            style={{ height: "22px", width: "22px", padding: "0" }}
-            variant="link"
-            onClick={() => confirmDeleteProduct(item.id)}
-          >
-            <FaTrash style={{ color: "red" }} />
-          </Button>
+        <div className="btn-options" style={{ position: "relative", display: "inline-block" }}>
+          <i 
+          className="bi bi-three-dots"
+            onClick={() => toggleDropdown(item.id)}
+          />
+          {activeDropdown === item.id && (
+            <div
+              className={`dropdown-menu ${darkMode ? "bg-dark text-light" : "bg-light"}`}
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: "0",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                
+                borderRadius: "4px",
+              }}
+            >
+              <button
+                className="dropdown-item"
+                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+                onClick={() => handleEdit(item.id)}
+              >{t.edit}
+              </button>
+              <button
+                className="dropdown-item"
+                style={{ display: "flex", alignItems: "center", color:"red", gap: "0.5rem", }}
+                onClick={() => confirmDeleteProduct(item.id)}
+              > {t.delete}
+              </button>
+            </div>
+          )}
         </div>
       ),
     },
   ];
-
+  if (isLoading) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Spinner animation="grow" />
+    </div>
+  );
   return (
     <div
       className={`container shadow p-4 mb-3 mx-2 ${

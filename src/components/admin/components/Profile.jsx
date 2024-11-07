@@ -4,13 +4,13 @@ import {
   getCustomerById,
   updateCustomerProfile,
 } from "../../../api/customerService";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import { Navigate, useOutletContext } from "react-router-dom";
 import EditProfileFormUserAdmin from "../../AuthForm/EditProfileFormUserAdmin";
 import EditProfileFormSuperAdmin from "../../AuthForm/EditProfileFormSuperAdmin";
 import { ThemeContext } from "../../themes/ThemeContext";
 import { AuthenticationContext } from "../../../services/authenticationContext/authentication.context";
-import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
+import useLanguage from "../../themes/useLanguage";
 import moment from "moment";
 import "moment/locale/es";
 
@@ -18,12 +18,12 @@ const Profile = () => {
   const { user } = useOutletContext();
   const { darkMode } = useContext(ThemeContext);
   const { user: loggedInUser } = useContext(AuthenticationContext);
-  const { t, language } = useLanguage(); // Desestructurar t y language desde useLanguage
+  const { t, language } = useLanguage();
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null); // Añadido para manejar el usuario seleccionado
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     const fetchCustomer = async () => {
@@ -31,8 +31,8 @@ const Profile = () => {
         try {
           const token = localStorage.getItem("token");
           const data = await getCustomerById(user.id, token);
-          console.log("Respuesta completa del backend:", data); // Verificar toda la respuesta
           setData(data);
+          console.log("data: ", data);
         } catch (error) {
           setError(error);
         } finally {
@@ -68,22 +68,8 @@ const Profile = () => {
     setSelectedUser(null);
   };
 
-  const handleEdit = (selectedUser) => {
-    // Verificar si el usuario actual está intentando editar su propio perfil
-    const isEditingOwnProfile = selectedUser.id === user.id;
-
-    // Si el usuario no es Super Admin y está intentando editar a otro usuario, mostrar error
-    if (!isSuperAdmin && !isEditingOwnProfile) {
-      Swal.fire({
-        icon: "error",
-        title: t.permissionDeniedTitle, // Asegúrate de tener esta clave
-        text: t.permissionDeniedMessage, // Asegúrate de tener esta clave
-      });
-      return;
-    }
-
-    console.log("Editing user:", selectedUser); // Verifica qué usuario se está editando
-    setSelectedUser(selectedUser);
+  const handleEdit = () => {
+    setSelectedUser(data);
     setIsEditing(true);
   };
 
@@ -93,18 +79,17 @@ const Profile = () => {
     return <Navigate to="/login" />;
   }
 
-  if (isLoading) {
-    return <p>{t.loading}</p>;
-  }
+  if (isLoading) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Spinner animation="grow" />
+    </div>
+  );
 
   if (error) {
     return (
       <p className="text-danger">{error.message || t.errorLoadingProfile}</p>
     );
   }
-
-  // Verificación de los roles en la consola
-  console.log("Data en Profile:", data.roles);
 
   return (
     <div
@@ -253,7 +238,7 @@ const Profile = () => {
               <Col xs={12} md={4}>
                 <Row className="justify-content-end me-4">
                   <Button
-                    onClick={() => handleEdit(user)} // Llamar a handleEdit con el usuario actual
+                    onClick={handleEdit}
                     variant="outline-secondary"
                     size="sm"
                     className="border border-2 rounded-pill w-25 p-1 d-flex justify-content-center"

@@ -15,12 +15,8 @@ function Footer() {
       } mt-5`}
     >
       <Container>
-        <Row className="py-4">
-          <Col md={4} className="text-center text-md-left">
-            <h5>{t.nexufy}</h5>
-            <p>{t.solutions}</p>
-          </Col>
-          <Col md={4} className="text-center">
+        <Row className="py-4 ">
+          <Col md={6} className="visually-hidden text-center">
             <h5>{t.usefulLinks}</h5>
             <ul className="list-unstyled">
               <li>
@@ -57,7 +53,11 @@ function Footer() {
               </li>
             </ul>
           </Col>
-          <Col md={4} className="text-center text-md-right">
+          <Col md={10} className="text-center text-md-left">
+            <h5>{t.nexufy}</h5>
+            <p>{t.solutions}</p>
+          </Col>
+          <Col md={2} className="text-center text-md-right">
             <h5>{t.followUs}</h5>
             <a
               href="https://www.facebook.com"

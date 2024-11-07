@@ -55,9 +55,10 @@ const ProductItem = () => {
         }`}
       />
 
-      <ProductSeller customerId={customerId} />
+      
+      {/* <ProductSeller customerId={customerId} /> */}
 
-      <h3
+      {/* <h3
         className={`container fs-3 fw-medium my-4 ${
           darkMode ? "text-white" : "text-dark"
         }`}
@@ -65,7 +66,7 @@ const ProductItem = () => {
         {t.productComments}
       </h3>
 
-      <ProductComments productId={id} />
+      <ProductComments productId={id} /> */}
     </>
   );
 };

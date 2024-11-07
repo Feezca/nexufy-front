@@ -11,10 +11,9 @@ import {
 } from "../../../api/statisticService";
 import useLanguage from "../../themes/useLanguage";
 import { ThemeContext } from "../../themes/ThemeContext";
-
-// Importar herramientas para tooltips
 import { useTooltip, TooltipWithBounds, defaultStyles } from "@visx/tooltip";
 import { localPoint } from "@visx/event";
+import { Spinner } from "react-bootstrap";
 
 const Statistics = () => {
   const { darkMode } = useContext(ThemeContext);
@@ -184,7 +183,13 @@ const Statistics = () => {
     [maxProducts, yMax]
   );
 
-  if (loading) return <p>{t.loadingStatistics}</p>;
+  if (loading)
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <Spinner animation="grow" />
+      </div>
+    );
+
   if (error)
     return (
       <div
@@ -216,30 +221,18 @@ const Statistics = () => {
         {t.statistics}
       </h2>
 
-      <div
-        className={`w-100 p-3 py-2 d-flex justify-content-around ${
-          darkMode ? "bg-dark text-white" : "bg-light text-dark"
-        } rounded mb-4`}
-      >
+      <div className="w-100 p-3 py-2 d-flex justify-content-around bg-dark-subtle rounded mb-4">
         <div className="d-flex flex-column w-50 align-items-start ms-2">
-          <p
-            className={`fw-semibold ${
-              darkMode ? "text-white" : "text-body-tertiary"
-            }`}
-          >
+          <p className="text-body-tertiary fw-semibold">
             {t.totalRegisteredCustomers}
           </p>
-          <p className="fs-1">{totalCustomers}</p>
+          <p className="fs-1 text-dark">{totalCustomers}</p>
         </div>
         <div className="d-flex w-50 flex-column align-items-start">
-          <p
-            className={`fw-semibold ${
-              darkMode ? "text-white" : "text-body-tertiary"
-            }`}
-          >
+          <p className="text-body-tertiary fw-semibold">
             {t.totalPublishedProducts}
           </p>
-          <p className="fs-1">{totalProducts}</p>
+          <p className="fs-1 text-dark">{totalProducts}</p>
         </div>
       </div>
 
@@ -251,7 +244,7 @@ const Statistics = () => {
           style={{ position: "relative" }}
         >
           <h3
-            className={`fs-4 mb-3 ${
+            className={`fs-5 mb-3 ${
               darkMode ? "text-white" : "text-body-tertiary"
             }`}
           >
@@ -304,6 +297,8 @@ const Statistics = () => {
                 scale={xScale}
                 top={yMax}
                 label={t.monthsLabel}
+                tickStroke={darkMode ? "#FFFFFF" : "#333333"}
+                stroke={darkMode ? "#FFFFFF" : "#333333"}
                 tickLabelProps={() => ({
                   fill: darkMode ? "#FFFFFF" : "#333333",
                   fontSize: 12,
@@ -313,6 +308,8 @@ const Statistics = () => {
               <AxisLeft
                 scale={yScaleCustomer}
                 label={t.clientsRegistered}
+                tickStroke={darkMode ? "#FFFFFF" : "#333333"}
+                stroke={darkMode ? "#FFFFFF" : "#333333"}
                 tickValues={generateTicks(maxCustomers)}
                 tickLabelProps={() => ({
                   fill: darkMode ? "#FFFFFF" : "#333333",
@@ -322,7 +319,6 @@ const Statistics = () => {
               />
             </Group>
           </svg>
-          {/* Tooltip para Clientes */}
           {tooltipOpenCustomers && (
             <TooltipWithBounds
               top={tooltipTopCustomers}
@@ -360,7 +356,7 @@ const Statistics = () => {
           style={{ position: "relative" }}
         >
           <h3
-            className={`fs-4 mb-3 ${
+            className={`fs-5 mb-3 ${
               darkMode ? "text-white" : "text-body-tertiary"
             }`}
           >
@@ -413,6 +409,8 @@ const Statistics = () => {
                 scale={xScale}
                 top={yMax}
                 label={t.monthsLabel}
+                tickStroke={darkMode ? "#FFFFFF" : "#333333"}
+                stroke={darkMode ? "#FFFFFF" : "#333333"}
                 tickLabelProps={() => ({
                   fill: darkMode ? "#FFFFFF" : "#333333",
                   fontSize: 12,
@@ -422,6 +420,8 @@ const Statistics = () => {
               <AxisLeft
                 scale={yScaleProduct}
                 label={t.productsPublished}
+                tickStroke={darkMode ? "#FFFFFF" : "#333333"}
+                stroke={darkMode ? "#FFFFFF" : "#333333"}
                 tickValues={generateTicks(maxProducts)}
                 tickLabelProps={() => ({
                   fill: darkMode ? "#FFFFFF" : "#333333",

@@ -1,7 +1,7 @@
 // AbmUsers.jsx
 
 import { useContext, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { deleteCustomer, registerAdminUser } from "../../../api/adminService";
 import {
@@ -40,6 +40,7 @@ const AbmUsers = () => {
     token,
     "customers"
   );
+  const [activeDropdown, setActiveDropdown] = useState(null); // Estado para controlar el menú activo
 
   // Determinar si el usuario actual es Super Admin
   const isSuperAdmin = user?.roles.includes("ROLE_SUPERADMIN");
@@ -96,8 +97,6 @@ const AbmUsers = () => {
       });
       return;
     }
-
-    console.log("Editing user:", selectedUser);
     setSelectedUser(selectedUser);
     setIsEditing(true);
   };
@@ -122,7 +121,6 @@ const AbmUsers = () => {
   };
 
   const handleCancelEdit = () => {
-    console.log("handleCancelEdit ejecutado");
     setIsEditing(false);
     setSelectedUser(null);
   };
@@ -162,13 +160,20 @@ const AbmUsers = () => {
     }
   }, [user, navigate]);
 
-  if (isLoading) {
-    return <p>{t.loading}</p>;
-  }
+  if (isLoading) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Spinner animation="grow" />
+    </div>
+  );
 
   if (error) {
     return <p className="text-danger">{error.message}</p>;
   }
+
+  const toggleDropdown = (id) => {
+    console.log("Toggling dropdown for id:", id); // Verifica el id
+    setActiveDropdown((prev) => (prev === id ? null : id));
+  };
 
   return (
     <div
@@ -242,30 +247,60 @@ const AbmUsers = () => {
                     : t.noRole,
               },
               {
-                header: t.actions,
+                header: "",
                 accessor: "actions",
                 render: (item) => (
-                  <div style={{ display: "flex", gap: "0.5rem" }}>
-                    {/* Botón de Editar */}
-                    {(isSuperAdmin || item.id === user.id) && (
-                      <Button
-                        style={{ height: "22px", width: "22px", padding: "0" }}
-                        variant="link"
-                        onClick={() => handleEdit(item)}
-                      >
-                        <FaEdit />
-                      </Button>
-                    )}
-                    {/* Botón de Eliminar */}
-                    {isSuperAdmin && item.id !== user.id && (
-                      <Button
-                        style={{ height: "22px", width: "22px", padding: "0" }}
-                        variant="link"
-                        onClick={() => confirmDeleteCustomer(item.id)}
-                      >
-                        <FaTrash style={{ color: "red" }} />
-                      </Button>
-                    )}
+                  <div
+                    className="btn-options"
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
+                    <i
+                      className="bi bi-three-dots"
+                      onClick={() => toggleDropdown(item.id)}
+                    />
+                    {activeDropdown === item.id &&
+                      isSuperAdmin &&
+                      item.id !== user.id && (
+                        <div
+                          className={`dropdown-menu ${
+                            darkMode ? "bg-dark text-light" : "bg-light"
+                          }`}
+                          style={{
+                            position: "absolute",
+                            top: "100%",
+                            left: "0",
+                            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+
+                            borderRadius: "4px",
+                          }}
+                        >
+                          
+                            <button
+                              className="dropdown-item"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.5rem",
+                              }}
+                              onClick={() => handleEdit(item)}
+                            >
+                              {t.edit}
+                            </button>
+                            <button
+                              className="dropdown-item"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "red",
+                                gap: "0.5rem",
+                              }}
+                              onClick={() => confirmDeleteCustomer(item.id)}
+                            >
+                              {" "}
+                              {t.delete}
+                            </button>
+                        </div>
+                      )}
                   </div>
                 ),
               },

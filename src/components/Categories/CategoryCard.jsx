@@ -1,15 +1,13 @@
-// CategoryCard.jsx
-
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react"; // Importar useContext
-import { ThemeContext } from "../themes/ThemeContext"; // Importar ThemeContext
+import { useContext } from "react";
+import { ThemeContext } from "../themes/ThemeContext";
 
 const CategoryCard = ({ id, image, name, description }) => {
-  const { darkMode } = useContext(ThemeContext); // Obtener el estado del tema
+  const { darkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
 
-  const handleCategoryClick = (name) => {
-    navigate("/all", { state: { category: name } });
+  const handleCategoryClick = () => {
+    navigate("/all", { state: { categoryId: id } });
   };
 
   return (
@@ -26,7 +24,6 @@ const CategoryCard = ({ id, image, name, description }) => {
       <div
         className={`overlay text-card-custom d-flex flex-column justify-content-center align-items-start`}
       >
-        {/* Nombre y descripción siempre en blanco */}
         <p className="fs-3 fw-semibold text-white">{name}</p>
         <p className="fs-6 text-white">{description}</p>
       </div>

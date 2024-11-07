@@ -4,7 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 import ProductList from "../../Products/ProductList";
 import { getProductsByCustomerId } from "../../../api/customerService";
-import { Button, Alert } from "react-bootstrap";
+import { Button, Alert, Spinner } from "react-bootstrap";
 import CreateProductForm from "./CreateProductForm";
 import { postProduct } from "../../../api/productService";
 import { ThemeContext } from "../../themes/ThemeContext";
@@ -70,9 +70,11 @@ const Publications = () => {
     ["ROLE_ADMIN", "ROLE_SUPERADMIN"].includes(role.toUpperCase())
   );
 
-  if (isLoading) {
-    return <p>{t.loading}</p>;
-  }
+  if (isLoading) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Spinner animation="grow" />
+    </div>
+  );
 
   if (error) {
     return <p className="text-danger">{error}</p>;

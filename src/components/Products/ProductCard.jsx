@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../themes/ThemeContext";
 import { LanguageContext } from "../themes/LanguageContext";
 import translations, { categoryNameToIdMapping } from "../themes/translations";
@@ -18,14 +18,15 @@ const ProductCard = ({
   description,
   price,
   category,
-  // ownerId, // Eliminado ya que asumimos que los productos son del usuario actual
-  showActions, // Controla la visualización de los botones
+  isOwner,
+  isSuperAdmin,
 }) => {
   const { darkMode } = useContext(ThemeContext);
   const { language } = useContext(LanguageContext);
   const { user } = useContext(AuthenticationContext);
   const t = translations[language];
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Obtener el ID de la categoría usando el nombre
   const categoryId = categoryNameToIdMapping[category];
@@ -38,25 +39,19 @@ const ProductCard = ({
 
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
-  // Determinar si el usuario es superadministrador (si es necesario)
-  const isSuperAdmin = user?.roles?.includes("ROLE_SUPERADMIN");
 
-  // Agrega logs para depuración
-  console.log("User in ProductCard:", user);
-  console.log("User ID in ProductCard:", user?.id);
-  console.log("showActions:", showActions);
+  const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    if(location.pathname === "/admin/publicaciones"){
+      setIsEdit(true);
+    };
+  }, [location.pathname]);
 
   const handleDetail = () => {
     navigate(`/product/${id}`, {
       state: {
-        product: {
-          id,
-          image,
-          name,
-          description,
-          price,
-          category,
-        },
+        product: { id, image, name, description, price, category },
       },
     });
   };
@@ -68,7 +63,7 @@ const ProductCard = ({
   }, [deleteSuccess]);
 
   const handleEdit = () => {
-    navigate(`/admin/edit-product/${id}`);
+    navigate(`/edit-product/${id}`);
   };
 
   const handleDelete = () => {
@@ -106,39 +101,21 @@ const ProductCard = ({
         alt={t.imageLabel}
         style={{ height: "12rem", objectFit: "cover" }}
       />
-      <Card.Body
-        className={`bg-secundario d-flex flex-column justify-content-between`}
-      >
+      <Card.Body className="bg-secundario d-flex flex-column justify-content-between">
         <div>
           <Card.Title
-            className={`fw-semibold ${
-              darkMode ? "text-white" : "text-primary"
-            }`}
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
+            className={`fw-semibold ${darkMode ? "text-white" : "text-primary"}`}
+            style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
           >
             {name}
           </Card.Title>
           <Card.Text
-            className={`fw-medium lh-sm ${
-              darkMode ? "text-white" : "text-secondary"
-            }`}
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
+            className={`fw-medium lh-sm ${darkMode ? "text-white" : "text-secondary"}`}
+            style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
           >
             {description}
           </Card.Text>
-          <Card.Text
-            className={`fw-semibold mb-0 ${
-              darkMode ? "text-white" : "text-primary"
-            }`}
-          >
+          <Card.Text className={`fw-semibold mb-0 ${darkMode ? "text-white" : "text-primary"}`}>
             $ {price}
           </Card.Text>
           <Card.Text
@@ -146,12 +123,11 @@ const ProductCard = ({
               darkMode ? "text-white" : "text-secondary"
             }`}
           >
-            {categoryNameInCurrentLanguage}
+            {category}
           </Card.Text>
         </div>
 
-        {/* Mostrar botones solo si showActions es true */}
-        {showActions && (
+        {(isEdit && (isOwner || isSuperAdmin)) && (
           <div className="d-flex justify-content-center gap-2 mt-3">
             <Button
               onClick={handleEdit}

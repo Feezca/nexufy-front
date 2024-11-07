@@ -5,14 +5,12 @@ import ProductCard from "./ProductCard";
 import categories from "../../data/category.json";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 import { deleteProduct } from "../../api/productService";
-import { LanguageContext } from "../themes/LanguageContext";
-import translations from "../themes/translations";
+import useLanguage from "../themes/useLanguage"; // Usar el hook personalizado para obtener las traducciones
 import placeholder from "../../assets/img/placeholder.jpg";
 
 const ProductList = ({ products, fetchUserProducts }) => {
   const { user } = useContext(AuthenticationContext);
-  const { language } = useContext(LanguageContext);
-  const t = translations[language];
+  const { t } = useLanguage(); // Usar el hook personalizado para obtener las traducciones
 
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -46,13 +44,7 @@ const ProductList = ({ products, fetchUserProducts }) => {
 
   return (
     <>
-      <Row
-        xs={1}
-        md={2}
-        lg={3}
-        className="g-4 mx-auto mb-6 justify-content-center"
-        style={{ rowGap: "3rem", columnGap: "3rem" }}
-      >
+      <Row xs={1} md={2} lg={3} className="mb-6 justify-content-around">
         {products.map((product) => (
           <Col key={product.id} className="d-flex justify-content-center">
             <div style={{ width: "auto", margin: "0 2rem" }}>

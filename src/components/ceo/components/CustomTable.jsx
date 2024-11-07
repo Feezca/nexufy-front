@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
-import { Table, Pagination } from "react-bootstrap";
+import { Pagination } from "react-bootstrap";
 import { ThemeContext } from "../../themes/ThemeContext";
 
 const CustomTable = ({ columns, data }) => {
@@ -18,31 +18,23 @@ const CustomTable = ({ columns, data }) => {
 
   return (
     <div className="container">
-      <Table
-        striped
-        bordered
-        hover
-        variant={darkMode ? "dark" : "light"}
-        className={darkMode ? "bg-dark text-light" : "bg-light text-dark"}
-      >
-        <thead>
-          <tr className="text-center">
-            {columns.map((col) => (
-              <th key={col.header}>{col.header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="text-center" style={{ fontSize: "14px" }}>
-          {paginatedData.map((item) => (
-            <tr key={item.id}>
-              {columns.map((col) => (
-                <td key={col.accessor}>{col.render(item)}</td>
-              ))}
-            </tr>
+      <div className={`d-flex ${darkMode ? "bg-dark text-light" : "bg-light text-dark"} mb-2 py-2`}>
+        {columns.map((col) => (
+          <div key={col.header} className="col text-center text-secondary fw-medium">
+            {col.header}
+          </div>
+        ))}
+      </div>
+      {paginatedData.map((item) => (
+        <div key={item.id} className="d-flex border  my-1  fw-semibold py-3 rowTable">
+          {columns.map((col) => (
+            <div key={col.accessor} className="col text-center">
+              {col.render(item)}
+            </div>
           ))}
-        </tbody>
-      </Table>
-      <Pagination className="w-full d-flex justify-content-center">
+        </div>
+      ))}
+      <Pagination className="d-flex justify-content-center mt-3">
         <Pagination.First
           onClick={() => handlePageChange(1)}
           disabled={currentPage === 1}
