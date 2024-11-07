@@ -7,6 +7,11 @@ const translations = {
     allFieldsRequiredError: "Todos los campos son obligatorios.",
     invalidEmailError: "El email no tiene un formato válido.",
     goToAdminProfile: "ir a promoverse a tu perfil",
+    usernameRequiredError: "El nombre de usuario es obligatorio.",
+    emailRequiredError: "El email es obligatorio.",
+    passwordRequiredError: "La contraseña es obligatoria.",
+    confirmPasswordRequiredError: "Por favor, confirma tu contraseña.",
+
     filterByPrice: "Por precio",
     priceUnder10000: "Menor a $10000",
     priceOver10000: "Mayor a $10000",
@@ -17,7 +22,6 @@ const translations = {
       "Soluciones innovadoras para la gestión de proyectos y desarrollo web.",
     usefulLinks: "Enlaces Útiles",
     aboutUs: "Sobre Nosotros",
-
     services: "Servicios",
     contact: "Contacto",
     faq: "Preguntas Frecuentes",
@@ -192,18 +196,16 @@ const translations = {
     productsPublishedByYou: "Productos publicados por ti",
     publishNew: "Publicar nuevo",
     noProductsPublished: "No tienes productos publicados.",
-
     errorLoadingProfile: "Error al cargar el perfil.",
-
     nameNotAvailable: "Nombre no disponible",
-
     emailNotAvailable: "Email no disponible",
-
     addressNotAvailable: "Dirección no disponible",
-
     lastnameNotAvailable: "Apellido no disponible",
-
     usernameNotAvailable: "Usuario no disponible",
+    usernameRequiredError: "El nombre de usuario es obligatorio.",
+    emailRequiredError: "El email es obligatorio.",
+    passwordRequiredError: "La contraseña es obligatoria.",
+    confirmPasswordRequiredError: "Por favor confirma tu contraseña.",
     birthdateLabel: "Fecha de nacimiento",
     birthdateNotAvailable: "Fecha no disponible",
     editButton: "Editar",
@@ -264,9 +266,9 @@ const translations = {
       NOVEMBER: "Noviembre",
       DECEMBER: "Diciembre",
     },
-    editProduct:"Editar producto",
-    editUser:"Edición de usuario",
-    suspendLabel:"Suspender",
+    editProduct: "Editar producto",
+    editUser: "Edición de usuario",
+    suspendLabel: "Suspender",
     monthsLabel: "Meses",
     clientsRegistered: "Clientes Registrados",
     productsPublished: "Productos Publicados",
@@ -278,17 +280,12 @@ const translations = {
     retry: "Reintentar",
     downloadCustomerReport: "Descargar reporte de clientes",
     downloadProductReport: "Descargar reporte de productos",
-
     promoteSuccessMessage: "Te has promovido con éxito.",
     needToBeAdminToPublishMessage:
       "Necesitas ser administrador para publicar productos. ve a tu perfil-editar y promuevete",
-
     errorPromotingUser: "Error al promover el usuario.",
-
     verMas: "ver mas",
-
     passwordTooShortError: "La contraseña debe tener al menos 6 caracteres.",
-
     // Agrega más traducciones si es necesario
   },
   en: {
@@ -318,7 +315,7 @@ const translations = {
     ceoProfile: "CEO Profile",
     logout: "Log Out",
     login: "Log In",
-    suspendTime:"Suspend time",
+    suspendTime: "Suspend time",
     deletedProductMessage: "Product has been deleted.",
     categories: "Categories",
     usernameLabel: "Username",
@@ -459,7 +456,7 @@ const translations = {
         description: "Description of Packaging",
       },
     ],
-    suspendLabel:"Suspend",
+    suspendLabel: "Suspend",
     nameLabel: "First Name",
     addressLabel: "Address",
     lastnameLabel: "Last Name",
@@ -474,7 +471,11 @@ const translations = {
     userDeletedSuccessfully: "User deleted successfully.",
     errorDeletingUser: "Error deleting user.",
     userSuspendedUntil: "This user is suspended until {date}.",
-    editUser:"User edition",
+    editUser: "User edition",
+    usernameRequiredError: "Username is required.",
+    emailRequiredError: "Email is required.",
+    passwordRequiredError: "Password is required.",
+    confirmPasswordRequiredError: "Please confirm your password.",
     suspendForDays: "Suspend for {days} days",
     liftSuspension: "Lift suspension",
     deleteUser: "Delete user",
@@ -485,23 +486,17 @@ const translations = {
     productsPublishedByYou: "Products published by you",
     publishNew: "Publish new",
     noProductsPublished: "You have no products published.",
-
     errorLoadingProfile: "Error loading profile.",
-
     nameNotAvailable: "Name not available",
-
     emailNotAvailable: "Email not available",
-
     addressNotAvailable: "Address not available",
-
     lastnameNotAvailable: "Last name not available",
-
     unavailableProduct: "Products not available...",
     usernameNotAvailable: "Username not available",
     birthdateLabel: "Birthdate",
     birthdateNotAvailable: "Birthdate not available",
     editButton: "Edit",
-    editProduct:"Product edition",
+    editProduct: "Product edition",
     back: "Back",
     categoryLabel: "Category",
     selectCategory: "Select a category",
@@ -537,7 +532,7 @@ const translations = {
     dashboard: "Dashboard",
     profilePhoto: "Profile photo",
     promoteToAdminButton: "Promote an administrator",
-    Promote: "¡You have been promoted! You can now post.",
+    Promote: "You have been promoted! You can now post.",
     ClientRegister: "Registered Customers",
     PubliProduct: "Published Products",
     noRole: "No role",
@@ -569,9 +564,7 @@ const translations = {
     promoteSuccessMessage: "You have been promoted successfully.",
     needToBeAdminToPublishMessage:
       "You need to be an admin to publish products.", // Traducción en inglés
-
     errorPromotingUser: "Error promoting user.",
-
     verMas: "see more",
     loadingAllProduct: "Loading all products..",
     goToAdminProfile: "Go to promote your profile",

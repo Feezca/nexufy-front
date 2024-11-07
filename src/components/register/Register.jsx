@@ -81,27 +81,23 @@ const Register = () => {
     };
 
     if (!formData.username) {
-      newFieldErrors.username =
-        t.usernameRequiredError || "El nombre de usuario es obligatorio.";
+      newFieldErrors.username = t.usernameRequiredError;
       hasErrors = true;
     }
     if (!formData.email) {
-      newFieldErrors.email = t.emailRequiredError || "El email es obligatorio.";
+      newFieldErrors.email = t.emailRequiredError;
       hasErrors = true;
     }
     if (!formData.password) {
-      newFieldErrors.password =
-        t.passwordRequiredError || "La contraseña es obligatoria.";
+      newFieldErrors.password = t.passwordRequiredError;
       hasErrors = true;
     }
     if (!formData.confirmPassword) {
-      newFieldErrors.confirmPassword =
-        t.confirmPasswordRequiredError || "Por favor confirma tu contraseña.";
+      newFieldErrors.confirmPassword = t.confirmPasswordRequiredError;
       hasErrors = true;
     }
     if (formData.password !== formData.confirmPassword) {
-      newFieldErrors.confirmPassword =
-        t.passwordMismatchError || "Las contraseñas no coinciden.";
+      newFieldErrors.confirmPassword = t.passwordMismatchError;
       hasErrors = true;
     }
 
