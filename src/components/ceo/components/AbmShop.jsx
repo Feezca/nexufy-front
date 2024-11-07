@@ -124,13 +124,13 @@ const AbmShop = () => {
               }}
             >
               <button
-                className="dropdown-item"
+                className="dropdown-item ps-5"
                 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
                 onClick={() => handleEdit(item.id)}
               >{t.edit}
               </button>
               <button
-                className="dropdown-item"
+                className="dropdown-item fw-semibold ps-5" 
                 style={{ display: "flex", alignItems: "center", color:"red", gap: "0.5rem", }}
                 onClick={() => confirmDeleteProduct(item.id)}
               > {t.delete}

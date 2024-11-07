@@ -262,7 +262,7 @@ const AbmUsers = () => {
                       isSuperAdmin &&
                       item.id !== user.id && (
                         <div
-                          className={`dropdown-menu ${
+                          className={`dropdown-menu d-flex flex-column justify-content-center ${
                             darkMode ? "bg-dark text-light" : "bg-light"
                           }`}
                           style={{
@@ -276,7 +276,7 @@ const AbmUsers = () => {
                         >
                           
                             <button
-                              className="dropdown-item"
+                              className="dropdown-item ps-5 "
                               style={{
                                 display: "flex",
                                 alignItems: "center",
@@ -287,7 +287,7 @@ const AbmUsers = () => {
                               {t.edit}
                             </button>
                             <button
-                              className="dropdown-item"
+                              className="dropdown-item  ps-5 fw-semibold"
                               style={{
                                 display: "flex",
                                 alignItems: "center",

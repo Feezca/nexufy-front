@@ -9,6 +9,7 @@ import {
 } from "../../api/adminService";
 import moment from "moment";
 import useLanguage from "../themes/useLanguage";
+import Swal from "sweetalert2";
 
 const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
   const { t, language } = useLanguage();
@@ -19,13 +20,12 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
   const [suspensionEndDate, setSuspensionEndDate] = useState(
     formData.suspendedUntil ? new Date(formData.suspendedUntil) : null
   );
-  console.log(formData);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  console.log("formData: ", formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,17 +66,6 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
       setSuccessMessage(t.suspensionLifted);
     } catch (error) {
       setErrorMessage(error.message || t.errorLiftingSuspension);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      await deleteCustomer(formData.id, token);
-      setSuccessMessage(t.userDeletedSuccessfully);
-      onCancel(); // Llamamos a onCancel para cerrar el formulario tras eliminar
-    } catch (error) {
-      setErrorMessage(error.message || t.errorDeletingUser);
     }
   };
 
@@ -243,14 +232,6 @@ const EditProfileFormSuperAdmin = ({ initialData, onSave, onCancel }) => {
                   {t.liftSuspension}
                 </Button>
               )}
-
-              <Button
-                variant="link"
-                className="text-danger fw-semibold opacity-50 mt-4"
-                onClick={handleDelete}
-              >
-                {t.deleteUser}
-              </Button>
             </Col>
           </Row>
         )}
