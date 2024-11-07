@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import PropTypes from "prop-types";
-import useLanguage from "../../themes/useLanguage"; // Importar el hook useLanguage
+import useLanguage from "../../themes/useLanguage";
 
 const CreateProductForm = ({ onSave, onCancel }) => {
   const [formData, setFormData] = useState({});
@@ -149,7 +149,7 @@ const CreateProductForm = ({ onSave, onCancel }) => {
 
 CreateProductForm.propTypes = {
   onSave: PropTypes.func.isRequired,
-  onCancel: PropTypes.func, // Añadido onCancel
+  onCancel: PropTypes.func,
 };
 
 export default CreateProductForm;

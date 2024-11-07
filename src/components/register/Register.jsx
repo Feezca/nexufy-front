@@ -81,19 +81,27 @@ const Register = () => {
     };
 
     if (!formData.username) {
-      newFieldErrors.username = t.usernameRequiredError;
+      newFieldErrors.username =
+        t.usernameRequiredError || "El nombre de usuario es obligatorio.";
       hasErrors = true;
     }
     if (!formData.email) {
-      newFieldErrors.email = t.emailRequiredError;
+      newFieldErrors.email = t.emailRequiredError || "El email es obligatorio.";
       hasErrors = true;
     }
     if (!formData.password) {
-      newFieldErrors.password = t.passwordRequiredError;
+      newFieldErrors.password =
+        t.passwordRequiredError || "La contraseña es obligatoria.";
       hasErrors = true;
     }
     if (!formData.confirmPassword) {
-      newFieldErrors.confirmPassword = t.confirmPasswordRequiredError;
+      newFieldErrors.confirmPassword =
+        t.confirmPasswordRequiredError || "Por favor confirma tu contraseña.";
+      hasErrors = true;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newFieldErrors.confirmPassword =
+        t.passwordMismatchError || "Las contraseñas no coinciden.";
       hasErrors = true;
     }
 
@@ -130,9 +138,16 @@ const Register = () => {
     navigate("/");
   };
 
+  // Determinar si el botón debe estar habilitado
+  const isFormValid =
+    formData.username &&
+    formData.email &&
+    formData.password.length >= 6 &&
+    formData.password === formData.confirmPassword;
+
   return (
     <div className={darkMode ? "bg-dark text-light" : "bg-light text-dark"}>
-      <Navbar className="px-3 py-2 ">
+      <Navbar className="px-3 py-2">
         <Navbar.Brand onClick={handleGoHome} style={{ cursor: "pointer" }}>
           <img src={img} alt="Nexufy Logo" style={{ height: "80px" }} />
         </Navbar.Brand>
@@ -210,7 +225,11 @@ const Register = () => {
               )}
             </div>
 
-            <button className="btn btn-primary w-100" onClick={handleRegister}>
+            <button
+              className="btn btn-primary w-100"
+              onClick={handleRegister}
+              disabled={!isFormValid}
+            >
               {t.registerButton}
             </button>
 

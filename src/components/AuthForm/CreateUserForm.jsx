@@ -20,7 +20,6 @@ const CreateUserForm = ({ onSave, onCancel }) => {
   };
 
   const handleCancel = () => {
-    // Función para manejar la cancelación
     if (onCancel) {
       onCancel();
     }
